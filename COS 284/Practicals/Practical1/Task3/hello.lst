@@ -1,0 +1,25 @@
+     1                                 %line 1+1 hello.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 [segment .data]
+     9 00000000 4D792073747564656E-     hello: db "My student number is U15043143",0xa,0xd
+    10 00000000 74206E756D62657220-
+    11 00000000 697320553135303433-
+    12 00000000 3134330A0D         
+    13                                 
+    14                                 [segment .text]
+    15                                 [global _start]
+    16                                 
+    17                                 _start:
+    18 00000000 B801000000              mov eax,1
+    19 00000005 BF01000000              mov edi,1
+    20 0000000A BA20000000              mov edx,32
+    21 0000000F 488D3425[00000000]      lea rsi,[hello]
+    22 00000017 0F05                    syscall
+    23 00000019 B83C000000              mov eax,60
+    24 0000001E 31FF                    xor edi, edi
+    25 00000020 0F05                    syscall

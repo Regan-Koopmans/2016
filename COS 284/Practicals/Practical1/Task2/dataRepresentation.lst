@@ -1,0 +1,23 @@
+     1                                 %line 1+1 dataRepresentation.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [segment .data]
+     8 00000000 00000000                value1 dd 0.0
+     9 00000004 00000080                value2 dd -0.0
+    10 00000008 00000000                value3 dd 0
+    11 0000000C 00000000                value4 dd -0
+    12 00000010 CC5D5740                value5 dd 3.3651
+    13 00000014 3333F642                value6 dd 123.1
+    14 00000018 666666C0                value7 dd -3.6
+    15 0000001C 0000C03F                value8 dd 1.5
+    16                                 
+    17                                 [segment .text]
+    18                                 [global _start]
+    19                                 
+    20                                 _start:
+    21 00000000 B801000000              mov eax,1
+    22 00000005 BB00000000              mov ebx,0
+    23 0000000A CD80                    int 0x80
