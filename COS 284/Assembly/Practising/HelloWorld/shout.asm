@@ -1,4 +1,4 @@
-; This is me practising assembly
+vac; This is me practising assembly
 
   segment .data
 
