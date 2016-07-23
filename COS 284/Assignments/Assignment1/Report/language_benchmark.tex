@@ -1,0 +1,72 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+
+
+
+\title{Benchmarking Memory and Computational Efficiency of Various Languages}
+
+\author{COS 284, Regan Koopmans}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Testing Methods}
+	
+		In order to test the time taken when running a program, I used the '\texttt{time}' bash command. This command has a 1 millisecond accuracy. In order to record the averages and control the test sequences, I constructed the following short bash script:
+	
+	\hrulefill
+	
+		\begin{lstlisting}
+		
+ #!/bin/bash
+ for i in {1..100}
+   do
+     var=$(./getTime.sh 2>&1)
+     string="$var"
+     for i in {1..999}
+       do
+         var=$(./getTime.sh 2>&1)
+         string="$string + $var"
+       done
+     echo $(python -c "print ($string)/1000")
+ done
+		
+		\end{lstlisting}
+
+	\hrulefill
+	\\
+		In this case \texttt{getTime.sh} is a small script that runs and measures a program, dependent on its specific running requirements (such as invoking Java or Lisp). The results were then sorted and stored in a file for later comparison.
+	
+	
+	
+	\section*{Results}
+		\subsection*{Memory}
+
+		\begin{center}
+		\bgroup
+		\def\arraystretch{1.5}
+			\begin{tabular}{|l|l|}
+				\hline
+				\textit{Language} & \textit{Space Occupied on Disk}	\\ \hline
+				Assembly & 4 KB                          			\\
+				C++      & 12 KB                         			\\
+				COBOL    & 16 KB                         			\\
+				Fortran  & 12 KB                         			\\
+				Lisp     & 4 KB (clisp binary is 9.5 MB) 			\\
+				Java     & 4 KB (JVM is approx. 150 MB)  			\\ \hline
+			\end{tabular}
+		\egroup
+		\end{center}
+		
+		\subsection*{Computation Time}
+	
+	\section*{Conclusion}
+	
+	It is obvious that, which concurs with expectation. This is however only a limited test, and languages may be faster or slower than one another in certain environments and tasks.
+	
+\end{document}
