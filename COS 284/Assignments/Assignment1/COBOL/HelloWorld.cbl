@@ -3,5 +3,5 @@ IDENTIFICATION DIVISION.
   AUTHOR. Regan Koopmans.
 
 PROCEDURE DIVISION.
-  DISPLAY 'Hello world!'.
+           DISPLAY 'The quick brown fox jumps over the lazy dog.'.
   STOP RUN.

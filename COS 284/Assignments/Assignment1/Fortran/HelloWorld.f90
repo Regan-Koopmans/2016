@@ -3,5 +3,5 @@
 ! Output:   "Hello world!"
 ! Author:   Regan Koopmans
 
-PRINT*,"Hello world!"
+PRINT*,"The quick brown fox jumps over the lazy dog."
 END

@@ -5,10 +5,10 @@
 
 #include <iostream>
 
-using namespace std//
+using namespace std;
 
 int main()
 {
-  cout << "Hello world!" << endl//
-  return 0//
+  cout << "The quick brown fox jumps over the lazy dog." << endl;
+  return 0;
 }

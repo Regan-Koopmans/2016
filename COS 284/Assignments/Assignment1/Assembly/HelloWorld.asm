@@ -4,7 +4,7 @@
 ; Author:   Regan Koopmans
 
   section .data
-    msg dw  "Hello world!",0xa,0xd
+    msg dw  "The quick brown fox jumps over the lazy dog.",0xa,0xd
     len equ $-msg
 
   section .text
