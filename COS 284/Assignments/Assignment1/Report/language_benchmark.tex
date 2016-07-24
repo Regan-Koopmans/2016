@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -17,36 +17,42 @@
 	
 	\section*{Testing Methods}
 	
-		In order to test the time taken when running a program, I used the '\texttt{time}' bash command. This command has a 1 millisecond accuracy. In order to record the averages and control the test sequences, I constructed the following short bash script:
+		In order to test the time taken when running a program, I used the '\texttt{perf}' bash command, which can be used for a variety of performance testing applications. This was used over the \texttt{time} command, which proved to be too inaccurate for valuable results. In order to record the averages and control the test sequences, I constructed the following short bash script:
 	
 	\hrulefill
 	
 		\begin{lstlisting}
 		
- #!/bin/bash
- for i in {1..100}
-   do
-     var=$(./getTime.sh 2>&1)
-     string="$var"
-     for i in {1..999}
-       do
-         var=$(./getTime.sh 2>&1)
-         string="$string + $var"
-       done
-     echo $(python -c "print ($string)/1000")
- done
+  #!/bin/bash
+  for i in {1..100}
+  do
+    echo $(perf stat -r 1000 ./HelloWorld 2>&1 >/dev/null 
+    | tail -n 2 | sed 's/ \+//' | sed 's/ /,/' 
+    | sed 's/[^0-9.]//g')
+  done
+
 		
 		\end{lstlisting}
 
 	\hrulefill
 	\\
-		In this case \texttt{getTime.sh} is a small script that runs and measures a program, dependent on its specific running requirements (such as invoking Java or Lisp). The results were then sorted and stored in a file for later comparison.
+	\\	This was run on each program, dependent on its specific running requirements (such as invoking Java or Lisp). The results were then sorted and stored in a text file for later comparison. An example of the output can be seen below (results are recorded in seconds) :
 	
-	
-	
+			\begin{lstlisting}
+			
+		0.0007464720
+		0.0007465560
+		0.0007470370
+		0.0007487890
+		0.0007489340
+		...
+			
+			
+		\end{lstlisting}
+
 	\section*{Results}
 		\subsection*{Memory}
-
+		
 		\begin{center}
 		\bgroup
 		\def\arraystretch{1.5}
@@ -62,11 +68,26 @@
 			\end{tabular}
 		\egroup
 		\end{center}
-		
+		\space
 		\subsection*{Computation Time}
-	
+			\space
+			\begin{center}
+				\bgroup
+				\def\arraystretch{1.5}
+				\begin{tabular}{|l|l|}
+					\hline
+					\textit{Language} & \textit{Best Average Run Time} \\ \hline
+					Assembly & 0.1489200 ms          \\
+					C++      & 0.8101980 ms          \\
+					COBOL    & 0.7464720 ms          \\
+					Fortran  & 0.5536200 ms          \\
+					Lisp     & 6.9800960 ms          \\
+					Java     & 48.8928690 ms                     \\ \hline
+				\end{tabular}
+				\egroup
+			\end{center}
 	\section*{Conclusion}
 	
-	It is obvious that, which concurs with expectation. This is however only a limited test, and languages may be faster or slower than one another in certain environments and tasks.
+	It is obvious that the Assembly implementation is the most proficient in both excecution time and binary size, which concurs with expectation. The compiled languages all complete within less than a millisecond, and the interpreted languages run dramatically slower (almost 50 times slower in Java's case). This is however only a limited test, and languages may be faster or slower than one another in certain environments and tasks.
 	
 \end{document}

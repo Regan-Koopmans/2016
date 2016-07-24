@@ -1,12 +1,5 @@
 #!/bin/bash
 for i in {1..100}
-  do
-    var=$(./getTime.sh 2>&1)
-    string="$var"
-    for i in {1..999}
-      do
-        var=$(./getTime.sh 2>&1)
-        string="$string + $var"
-      done
-      echo $(python -c "print ($string)/1000")
-  done
+do
+  echo $(perf stat -r 1000 java Main 2>&1 >/dev/null | tail -n 2 | sed 's/ \+//' | sed 's/ /,/' | sed 's/[^0-9.]//g')
+done
