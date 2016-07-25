@@ -7,6 +7,6 @@
   global _start
 
 _start:
-  mov eax,1   ; Calls the exit system call.
-  mov ebx,0   ; Sets the return value to zero.
-  int 0x80    ; Excecutes.
+  mov eax,1   	; Calls the exit system call.
+  mov ebx,0   	; Sets the return value to zero.
+  int 0x80    	; Excecutes.
