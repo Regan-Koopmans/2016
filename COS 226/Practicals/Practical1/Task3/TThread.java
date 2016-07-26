@@ -1,13 +1,26 @@
 //Practical assignment 1
 //Thread created by extending the Thread class
 
-class TThread extends Thread 
+import java.lang.Thread;
+
+class TThread extends Thread
 {
 	int getValue;
-	public void run() 
+	private Counter C;
+	public void run()
 	{
-		Thread.sleep(400);
-		getValue = getAndIncrement();
-		System.out.println(Thread.getName() + " " + getValue);
+		for (int x = 0; x < 4; x++)
+		{
+			try { sleep(400); } catch (Exception E) { System.out.println(E); }
+			getValue = C.getAndIncrement();
+			System.out.println(getName() + " " + getValue);
+		}
+	}
+
+	public TThread(){}
+
+	public TThread(Counter inputCounter)
+	{
+		C = inputCounter;
 	}
 }
