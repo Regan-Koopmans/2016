@@ -11,7 +11,7 @@ class TThread extends Thread
 	{
 		for (int x = 0; x < 4; x++)
 		{
-			try { sleep(400); } catch (Exception E) { System.out.println(E); }
+			try { sleep(1000); } catch (Exception E) { System.out.println(E); }
 			getValue = C.getAndIncrement();
 			System.out.println(getName() + " " + getValue);
 		}

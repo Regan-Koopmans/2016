@@ -20,6 +20,5 @@ class Counter {
 			return value++;
 		}
 		finally {myLock.unlock();}
-
 	}
 }

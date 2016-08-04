@@ -14,7 +14,7 @@ public class Counter
     lock.lock();
     try
     {
-      try{Thread.currentThread().sleep(1000);}catch(Exception e) {};
+      //try{Thread.currentThread().sleep(1);}catch(Exception e) {};
       System.out.println(counter+1);
       return counter++;
     }

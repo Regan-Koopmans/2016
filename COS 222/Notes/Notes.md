@@ -99,3 +99,35 @@ The Process Control Block (PCB) is a data structure that contains all the releva
 A thread (or *lightweight process*)
 
 Similarly to a process, a thread also has a **Thread Control Block** (TCB)
+
+---
+
+# Chapter 5 : Concurrency
+##### Mutual Exclusion and Synchronisation
+
+---
+ 
+# Manifestations of Concurrency
+
+Concurrency  arises in three broad contexts.
+
+- **Multiple appications** - Juggling many programs
+- **Structured Applications** - Program using threads
+- **Operating System Structure**
+
+---
+
+# Semaphore
+
+This is a variable that has an integer value upon which only three operations are defined:
+
+- May be **initialized** to a non-negative integer value.
+- The **semWait** operation **decrements** the value.
+- The **semSignal** operation **increments** the value.
+
+---
+
+# Monitors
+
+These are programming constructs that provide similar functionality to a semaphore but are easier to control.
+
