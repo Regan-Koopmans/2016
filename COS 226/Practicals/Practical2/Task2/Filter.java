@@ -19,7 +19,10 @@ public class Filter
 
 	public void lock()
 	{
-		int i = Math.round(Thread.currentThread().getId()) - 9;
+		// Derives a unique number based on the thread name, since ThreadID is not
+		// consistent with the number of user threads (java spawns its own).
+
+		int i = Integer.parseInt(Thread.currentThread().getName().substring(Thread.currentThread().getName().indexOf('-')+1));
 		boolean someKExists = true;
 		for (int x = 1; x < level.length; x++)
 		{
@@ -28,6 +31,9 @@ public class Filter
 			while (someYExists(i)){}
 		}
 	}
+
+	// Function checks whether there exists some y on a greater than or equal
+	// level than i (the curret thread)
 
 	public Boolean someYExists(int i)
 	{
@@ -41,7 +47,7 @@ public class Filter
 
 	public void unlock()
 	{
-		int i = Math.round(Thread.currentThread().getId())-9;
+		int i = Integer.parseInt(Thread.currentThread().getName().substring(Thread.currentThread().getName().indexOf('-')+1));
 		level[i] = 0;
 	}
 }
