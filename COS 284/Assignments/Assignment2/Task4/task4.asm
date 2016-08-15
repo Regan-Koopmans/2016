@@ -1,6 +1,7 @@
-; Program :     : Adder
-; Descripton    : Takes two positive integers, adds them together,
-;                 adds another 4 and then prints
+; Program :     : Multiplier
+; Descripton    : Takes two positive integers, takes
+                ; their difference and prints this to the
+                ; console
 ; Author        : Regan Koopmans
 
     section .data
@@ -9,7 +10,7 @@
 
 number1     dq      0
 number2     dq      0
-sum         dq      4
+quot        dq      0
 
 ; CONSTANTS
 
@@ -36,25 +37,23 @@ _start:
 
     ; Converting
 
-    sub     qword   [number1],48
+    sub    word   [number1],48
     sub     qword   [number2],48
 
-    ; Adding
-
-    add     r8,[number1]
-    add     r8,[number2]
-    add     [sum],r8
+    mov     rax,[number1]
+    div    word   [number2]
+    mov     [quot],rax
 
     ; Converting
 
-    add     qword   [sum],48
+    add     word   [quot],48
 
     ; Printing
 
     mov     rax,1
     mov     rdx,1               ; Only print the first "half" of the character
     mov     rdi,1
-    mov     rsi,sum
+    mov     rsi,quot
     syscall
 
     ; New Line
