@@ -1,5 +1,5 @@
 ; Program :     : Subtracter
-; Descripton    : Takes two positive integers, takes 
+; Descripton    : Takes two positive integers, takes
                 ; their difference and prints this to the
                 ; console
 ; Author        : Regan Koopmans
@@ -10,7 +10,8 @@
 
 number1     dq      0
 number2     dq      0
-diff         dq      0
+diff        dq      0
+nullIn
 
 ; CONSTANTS
 
@@ -24,15 +25,27 @@ _start:
     ; Reading
 
     mov     rax,0         ; Sets the system call number to 0  => read
-    mov     rdx,2         ; Number of characters to read = 1
+    mov     rdx,1         ; Number of characters to read = 1
     mov     rdi,0         ; Set input stream to standard input
     mov     rsi,number1
     syscall
 
     mov     rax,0
-    mov     rdx,2
+    mov     rdx,1
+    mov     rdi,0
+    mov     rsi,nullIn
+    syscall
+
+    mov     rax,0
+    mov     rdx,1
     mov     rdi,0
     mov     rsi,number2
+    syscall
+
+    mov     rax,0
+    mov     rdx,1
+    mov     rdi,0
+    mov     rsi,nullIn
     syscall
 
     ; Converting

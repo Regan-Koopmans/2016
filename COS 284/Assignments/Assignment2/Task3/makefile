@@ -1,12 +1,12 @@
 make:
-	yasm -f elf64 -g dwarf2 -l task3.lst task3.asm
-	ld task3.o -o task3
+	yasm -f elf64 -g dwarf2 -l mul.lst mul.asm
+	ld mul.o -o mul
 
 run:
-	./task3
+	./mul
 
 clean:
 	rm *.o *.lst
 
 debug:
-	cgdb task3
+	cgdb mul

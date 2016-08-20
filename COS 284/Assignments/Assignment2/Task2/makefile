@@ -1,12 +1,12 @@
 make:
-	yasm -f elf64 -g dwarf2 -l task2.lst task2.asm
-	ld task2.o -o task2
+	yasm -f elf64 -g dwarf2 -l sub.lst sub.asm
+	ld sub.o -o sub
 
 run:
-	./task2
+	./sub
 
 clean:
 	rm *.o *.lst
 
 debug:
-	cgdb task2
+	cgdb sub

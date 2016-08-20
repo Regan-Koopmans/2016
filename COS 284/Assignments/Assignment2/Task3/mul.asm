@@ -10,8 +10,8 @@
 
 number1     dq      0
 number2     dq      0
-quot        dq      0
-
+prod        dq      0
+nullIn      dq      0
 
 ; CONSTANTS
 
@@ -25,36 +25,51 @@ _start:
     ; Reading
 
     mov     rax,0         ; Sets the system call number to 0  => read
-    mov     rdx,2         ; Number of characters to read = 1
+    mov     rdx,1         ; Number of characters to read = 1
     mov     rdi,0         ; Set input stream to standard input
     mov     rsi,number1
     syscall
 
     mov     rax,0
-    mov     rdx,2
+    mov     rdx,1
+    mov     rdi,0
+    mov     rsi,nullIn
+    syscall
+
+    mov     rax,0
+    mov     rdx,1
     mov     rdi,0
     mov     rsi,number2
     syscall
 
+    mov     rax,0
+    mov     rdx,1
+    mov     rdi,0
+    mov     rsi,nullIn
+    syscall
+
     ; Converting
 
-    sub    word   [number1],48
+    sub     qword   [number1],48
     sub     qword   [number2],48
 
+    ; Adding
+
     mov     rax,[number1]
-    div    word   [number2]
-    mov     [quot],rax
+    imul    qword   [number2]
+    add     rax,3
+    mov     [prod],rax
 
     ; Converting
 
-    add     word   [quot],48
+    add     qword   [prod],48
 
     ; Printing
 
     mov     rax,1
     mov     rdx,1               ; Only print the first "half" of the character
     mov     rdi,1
-    mov     rsi,quot
+    mov     rsi,prod
     syscall
 
     ; New Line
