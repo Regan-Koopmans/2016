@@ -48,7 +48,10 @@ public class PricesInfo
 		lock.writeLock().lock();
 		try
 		{
+			System.out.println("Reads have completed");
+			System.out.println("Changing price 1");
 			this.price1 = price1;
+			System.out.println("Changing price 2");
 			this.price2 = price2;
 		}
 		finally

@@ -1,5 +1,6 @@
 
 import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.Lock;
 public class Peterson implements Lock
 {
 	private boolean flag [];
-    private AtomicInteger victim;
+    private AtomicInteger victim = new AtomicInteger();
     private int thread_0, thread_1;
 
     public Peterson left = null;
@@ -27,11 +28,13 @@ public class Peterson implements Lock
         this.parent = parent;
         flag = new boolean[threadCount];
     }
-	
+
+
 	public void lock()
 	{
         victim.set(ThreadID.get());
         flag[ThreadID.get()] = true;
+        while (anotherThreadInterested(ThreadID.get()) && isVictim(ThreadID.get())) {}
 	}
 	
 	public void lock(int id)

@@ -7,7 +7,7 @@ public class PetersonTree
 	Peterson root;
     int threadCount;
     List<Peterson> leaves;
-    Stack<Peterson> lockStack;
+    Stack<Peterson> lockStack = new Stack<Peterson>();
 
 	public PetersonTree(int threads)
 	{
@@ -16,8 +16,6 @@ public class PetersonTree
             leaves = new ArrayList<Peterson>(threads);
             threadCount = threads;
             PTConstruct();
-            System.out.println(threadCount);
-            System.out.println(leaves.size());
         }
         else
         {
@@ -30,7 +28,8 @@ public class PetersonTree
         Peterson node = getLeafForThread();
         while (node != null)
         {
-            node.lock();
+            node.lock(ThreadID.get());
+            System.out.println(ThreadID.get() + " locks");
             lockStack.push(node);
             node = node.parent;
         }
@@ -46,12 +45,14 @@ public class PetersonTree
         while (!lockStack.empty())
         {
             lockStack.pop().unlock();
+            System.out.println(ThreadID.get() + " unlocks");
+
         }
     }
 
     public Peterson getLeafForThread()
     {
-        return leaves.get(threadCount/2);
+        return leaves.get(threadCount/2-1);
     }
 
     public void PTConstruct()
@@ -62,10 +63,10 @@ public class PetersonTree
 
     public void makeLevel(Peterson node, int existingLevels)
     {
-        if (Math.pow(2,existingLevels-1) != threadCount)
+        if (Math.pow(2,existingLevels) != threadCount)
         {
-            node.left = new Peterson(threadCount);
-            node.right = new Peterson(threadCount);
+            node.left = new Peterson(node,threadCount);
+            node.right = new Peterson(node,threadCount);
             makeLevel(node.left,existingLevels+1);
             makeLevel(node.right,existingLevels+1);
         }
