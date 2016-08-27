@@ -10,7 +10,7 @@ pthread_t tid[2];
 int main()
 {
   pthread_create(&(tid[1]),NULL,printAndIncrement,&tid[1]);
-  printAndIncrement(tid[0]);
+  printAndIncrement((void *)tid[0]);
   pthread_join(tid[1],NULL);
   printf("\n");
   printf("Global counter : %d\n",globalCounter);
@@ -19,7 +19,7 @@ int main()
 
 void * printAndIncrement(void * id)
 {
-  if (pthread_equal(id,tid[0]))
+  if (pthread_equal((pthread_t)id,tid[0]))
   {
     for (int x = 0; x < 20; x++)
     {
@@ -37,5 +37,4 @@ void * printAndIncrement(void * id)
       fflush(0);
     }
   }
-
 }

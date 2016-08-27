@@ -1,27 +1,25 @@
-# include <pthread.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/wait.h>
 # include <stdlib.h>
 
-void printAndIncrement();
-
+void printAndIncrement(pid_t pid);
 int globalCounter = 0;
-int childComplete = 0;
-int status;
 
 int main()
 {
-
-  printAndIncrement();
+  void * stack;
+  stack = malloc(FIBER_STACK);
+  pid_t pid = clone(&printAndIncrement, (char *)stack + FIBER_STACK, CLONE_VM, 0);
+  printAndIncrement(pid);
+  printf("\n");
+  printf("Global counter : %d\n",globalCounter);
   return 0;
 }
 
 
-void printAndIncrement()
+void printAndIncrement(pid_t pid)
 {
-
-  pid_t pid = fork();
   if (pid == 0)
   {
     for (int x = 0; x < 20; x++)
@@ -42,8 +40,5 @@ void printAndIncrement()
       fflush(0);
       usleep(250000);
     }
-    if (wait(&status) == pid)
-    printf("\n");
-    printf("Global counter : %d\n",globalCounter);
   }
 }

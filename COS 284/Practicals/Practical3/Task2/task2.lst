@@ -1,0 +1,91 @@
+     1                                 %line 1+1 task2.asm
+     2                                 [section .data]
+     3                                 
+     4 00000000 0000000000000000       hexChar1 dq 0
+     5 00000008 0000000000000000       hexChar2 dq 0
+     6 00000010 0000000000000000       nullInput dq 0
+     7 00000018 0000000000000000       asciiChar dq 0
+     8 00000020 5700000000000000       asciiOffset dq 87
+     9 00000028 0A00000000000000       newline dq 0xa
+    10                                 
+    11                                 [section .text]
+    12                                 [global _start]
+    13                                 
+    14                                 _start:
+    15 00000000 49C7C400000000          mov r12,0
+    16                                 
+    17 00000007 48C7C000000000          mov rax,0
+    18 0000000E 48C7C700000000          mov rdi,0
+    19 00000015 48C7C201000000          mov rdx,1
+    20 0000001C 48C7C6[00000000]        mov rsi,hexChar1
+    21 00000023 0F05                    syscall
+    22                                 
+    23 00000025 48C7C000000000          mov rax,0
+    24 0000002C 48C7C700000000          mov rdi,0
+    25 00000033 48C7C201000000          mov rdx,1
+    26 0000003A 48C7C6[00000000]        mov rsi,hexChar2
+    27 00000041 0F05                    syscall
+    28                                 
+    29 00000043 48C7C000000000          mov rax,0
+    30 0000004A 48C7C700000000          mov rdi,0
+    31 00000051 48C7C201000000          mov rdx,1
+    32 00000058 48C7C6[00000000]        mov rsi,nullInput
+    33 0000005F 0F05                    syscall
+    34                                 
+    35                                 
+    36 00000061 4C8B1C25[00000000]      mov r11,[asciiOffset]
+    37 00000069 4C8B0425[00000000]      mov r8 ,[hexChar1]
+    38 00000071 49C7C230000000          mov r10,48
+    39 00000078 4D39D8                  cmp r8 ,r11
+    40 0000007B 4D0F4DD3                cmovge r10,r11
+    41 0000007F 4D29D0                  sub r8 ,r10
+    42                                 
+    43 00000082 48C7C010000000          mov rax,16
+    44 00000089 49F7E0                  mul r8
+    45 0000008C 4901C4                  add r12,rax
+    46                                 
+    47 0000008F 4C8B1C25[00000000]      mov r11,[asciiOffset]
+    48 00000097 4C8B0425[00000000]      mov r8 ,[hexChar2]
+    49 0000009F 49C7C230000000          mov r10,48
+    50 000000A6 4983F861                cmp r8 ,97
+    51 000000AA 4D0F4DD3                cmovge r10,r11
+    52 000000AE 4D29D0                  sub r8 ,r10
+    53                                 
+    54 000000B1 4D01C4                  add r12,r8
+    55 000000B4 4C892425[00000000]      mov [asciiChar],r12
+    56                                 
+    57 000000BC 48C7C001000000          mov rax,1
+    58 000000C3 48C7C701000000          mov rdi,1
+    59 000000CA 48C7C201000000          mov rdx,1
+    60 000000D1 48C7C6[00000000]        mov rsi,asciiChar
+    61 000000D8 0F05                    syscall
+    62                                 
+    63 000000DA 48C7C001000000          mov rax,1
+    64 000000E1 48C7C701000000          mov rdi,1
+    65 000000E8 48C7C201000000          mov rdx,1
+    66 000000EF 48C7C6[00000000]        mov rsi,newline
+    67 000000F6 0F05                    syscall
+    68                                 
+    69 000000F8 F61425[00000000]        not byte [asciiChar]
+    70                                 
+    71 000000FF 488B0425[00000000]      mov rax,[asciiChar]
+    72 00000107 49C7C002000000          mov r8,2
+    73 0000010E 48C7C200000000          mov rdx,0
+    74 00000115 49F7F0                  div r8
+    75 00000118 48890425[00000000]      mov [asciiChar],rax
+    76                                 
+    77 00000120 48C7C001000000          mov rax,1
+    78 00000127 48C7C701000000          mov rdi,1
+    79 0000012E 48C7C201000000          mov rdx,1
+    80 00000135 48C7C6[00000000]        mov rsi,asciiChar
+    81 0000013C 0F05                    syscall
+    82                                 
+    83 0000013E 48C7C001000000          mov rax,1
+    84 00000145 48C7C701000000          mov rdi,1
+    85 0000014C 48C7C201000000          mov rdx,1
+    86 00000153 48C7C6[00000000]        mov rsi,newline
+    87 0000015A 0F05                    syscall
+    88                                 
+    89 0000015C 48C7C03C000000          mov rax,60
+    90 00000163 48C7C700000000          mov rdi,0
+    91 0000016A 0F05                    syscall
