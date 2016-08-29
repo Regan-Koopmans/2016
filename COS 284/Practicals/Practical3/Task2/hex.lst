@@ -1,0 +1,106 @@
+     1                                 %line 1+1 hex.asm
+     2                                 [section .data]
+     3                                 
+     4 00000000 0000000000000000       hexChar1 dq 0
+     5 00000008 0000000000000000       hexChar2 dq 0
+     6 00000010 0000000000000000       nullInput dq 0
+     7 00000018 0000000000000000       asciiChar dq 0
+     8 00000020 5700000000000000       asciiOffset dq 87
+     9 00000028 0A00000000000000       newline dq 0xa
+    10                                 
+    11                                 [section .text]
+    12                                 [global _start]
+    13                                 
+    14                                 _start:
+    15 00000000 49C7C400000000          mov r12,0
+    16                                 
+    17 00000007 48C7C000000000          mov rax,0
+    18 0000000E 48C7C700000000          mov rdi,0
+    19 00000015 48C7C201000000          mov rdx,1
+    20 0000001C 48C7C6[00000000]        mov rsi,hexChar1
+    21 00000023 0F05                    syscall
+    22                                 
+    23 00000025 48C7C000000000          mov rax,0
+    24 0000002C 48C7C700000000          mov rdi,0
+    25 00000033 48C7C201000000          mov rdx,1
+    26 0000003A 48C7C6[00000000]        mov rsi,hexChar2
+    27 00000041 0F05                    syscall
+    28                                 
+    29 00000043 48C7C000000000          mov rax,0
+    30 0000004A 48C7C700000000          mov rdi,0
+    31 00000051 48C7C201000000          mov rdx,1
+    32 00000058 48C7C6[00000000]        mov rsi,nullInput
+    33 0000005F 0F05                    syscall
+    34                                 
+    35 00000061 4C8B0425[00000000]      mov r8,[hexChar1]
+    36 00000069 4983F82F                cmp r8,47
+    37 0000006D 0F8E1B010000            jle exit
+    38                                 
+    39 00000073 4983F87B                cmp r8,123
+    40 00000077 0F8D11010000            jge exit
+    41                                 
+    42 0000007D 4C8B0425[00000000]      mov r8,[hexChar2]
+    43 00000085 4983F82F                cmp r8,47
+    44 00000089 0F8EFF000000            jle exit
+    45                                 
+    46 0000008F 4983F87B                cmp r8,123
+    47 00000093 0F8DF5000000            jge exit
+    48                                 
+    49 00000099 4C8B1C25[00000000]      mov r11,[asciiOffset]
+    50 000000A1 4C8B0425[00000000]      mov r8 ,[hexChar1]
+    51 000000A9 49C7C230000000          mov r10,48
+    52 000000B0 4D39D8                  cmp r8 ,r11
+    53 000000B3 4D0F4DD3                cmovge r10,r11
+    54 000000B7 4D29D0                  sub r8 ,r10
+    55                                 
+    56 000000BA 48C7C010000000          mov rax,16
+    57 000000C1 49F7E0                  mul r8
+    58 000000C4 4901C4                  add r12,rax
+    59                                 
+    60 000000C7 4C8B1C25[00000000]      mov r11,[asciiOffset]
+    61 000000CF 4C8B0425[00000000]      mov r8 ,[hexChar2]
+    62 000000D7 49C7C230000000          mov r10,48
+    63 000000DE 4983F861                cmp r8 ,97
+    64 000000E2 4D0F4DD3                cmovge r10,r11
+    65 000000E6 4D29D0                  sub r8 ,r10
+    66                                 
+    67 000000E9 4D01C4                  add r12,r8
+    68 000000EC 4C892425[00000000]      mov [asciiChar],r12
+    69                                 
+    70 000000F4 48C7C001000000          mov rax,1
+    71 000000FB 48C7C701000000          mov rdi,1
+    72 00000102 48C7C201000000          mov rdx,1
+    73 00000109 48C7C6[00000000]        mov rsi,asciiChar
+    74 00000110 0F05                    syscall
+    75                                 
+    76 00000112 48C7C001000000          mov rax,1
+    77 00000119 48C7C701000000          mov rdi,1
+    78 00000120 48C7C201000000          mov rdx,1
+    79 00000127 48C7C6[00000000]        mov rsi,newline
+    80 0000012E 0F05                    syscall
+    81                                 
+    82 00000130 F61425[00000000]        not byte [asciiChar]
+    83                                 
+    84 00000137 488B0425[00000000]      mov rax,[asciiChar]
+    85 0000013F 49C7C002000000          mov r8,2
+    86 00000146 48C7C200000000          mov rdx,0
+    87 0000014D 49F7F0                  div r8
+    88 00000150 48890425[00000000]      mov [asciiChar],rax
+    89                                 
+    90 00000158 48C7C001000000          mov rax,1
+    91 0000015F 48C7C701000000          mov rdi,1
+    92 00000166 48C7C201000000          mov rdx,1
+    93 0000016D 48C7C6[00000000]        mov rsi,asciiChar
+    94 00000174 0F05                    syscall
+    95                                 
+    96 00000176 48C7C001000000          mov rax,1
+    97 0000017D 48C7C701000000          mov rdi,1
+    98 00000184 48C7C201000000          mov rdx,1
+    99 0000018B 48C7C6[00000000]        mov rsi,newline
+   100 00000192 0F05                    syscall
+   101                                 
+   102                                 exit:
+   103                                 
+   104 00000194 48C7C03C000000          mov rax,60
+   105 0000019B 48C7C700000000          mov rdi,0
+   106 000001A2 0F05                    syscall

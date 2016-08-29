@@ -1,0 +1,73 @@
+     1                                 %line 1+1 count.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 [section .data]
+     7                                 
+     8 00000000 0000000000000000        input dq 0
+     9 00000008 0000000000000000        nullInput dq 0
+    10 00000010 2700000000000000        asciiOffset dq 39
+    11 00000018 0A00000000000000        newline dq 0xa
+    12                                 
+    13                                 [section .text]
+    14                                 [global _start]
+    15                                 
+    16                                 _start:
+    17                                 
+    18 00000000 48C7C000000000          mov rax,0
+    19 00000007 48C7C700000000          mov rdi,0
+    20 0000000E 48C7C201000000          mov rdx,1
+    21 00000015 48C7C6[00000000]        mov rsi,input
+    22 0000001C 0F05                    syscall
+    23                                 
+    24 0000001E 48C7C000000000          mov rax,0
+    25 00000025 48C7C700000000          mov rdi,0
+    26 0000002C 48C7C201000000          mov rdx,1
+    27 00000033 48C7C6[00000000]        mov rsi,nullInput
+    28 0000003A 0F05                    syscall
+    29                                 
+    30 0000003C 49C7C200000000          mov r10,0
+    31                                 
+    32                                 count:
+    33                                 
+    34 00000043 49C7C100000000          mov r9,0
+    35 0000004A 4C8B0425[00000000]      mov r8,[input]
+    36 00000052 4983F83A                cmp r8,58
+    37 00000056 4C0F440C25[00000000]      cmovz r9,[asciiOffset]
+    38 0000005F 4C010C25[00000000]      add qword [input],r9
+    39                                 
+    40 00000067 4983F82F                cmp r8,47
+    41 0000006B 7E57                    jle exit_no_nl
+    42                                 
+    43                                 
+    44 0000006D 4983F87B                cmp r8,123
+    45 00000071 7433                    je exit
+    46                                 
+    47 00000073 4983F87B                cmp r8,123
+    48 00000077 7F4B                    jg exit_no_nl
+    49                                 
+    50 00000079 48C7C001000000          mov rax,1
+    51 00000080 48C7C201000000          mov rdx,1
+    52 00000087 48C7C701000000          mov rdi,1
+    53 0000008E 48C7C6[00000000]        mov rsi,input
+    54 00000095 0F05                    syscall
+    55                                 
+    56 00000097 48FF0425[00000000]      inc qword [input]
+    57 0000009F 49FFC2                  inc r10
+    58 000000A2 4983FA0C                cmp r10,12
+    59 000000A6 7C99                    jl count
+    60                                 
+    61                                 exit:
+    62                                 
+    63 000000A8 48C7C001000000          mov rax,1
+    64 000000AF 48C7C201000000          mov rdx,1
+    65 000000B6 48C7C701000000          mov rdi,1
+    66 000000BD 48C7C6[00000000]        mov rsi,newline
+    67 000000C4 0F05                    syscall
+    68                                 
+    69                                 exit_no_nl:
+    70                                 
+    71 000000C6 48C7C03C000000          mov rax,60
+    72 000000CD 48C7C700000000          mov rdi,0
+    73 000000D4 0F05                    syscall

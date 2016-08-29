@@ -1,33 +1,50 @@
      1                                 %line 1+1 task2.asm
      2                                 [section .data]
      3                                 
-     4 00000000 0000                   input dw 0
-     5 00000002 0000                   store dw 0
-     6                                 
-     7                                 [section .text]
-     8                                 [global _start]
-     9                                 
+     4 00000000 0000000000000000       input dq 0
+     5 00000008 0000000000000000       store dq 0
+     6 00000010 0A                     newline db 0x0a
+     7                                 
+     8                                 [section .text]
+     9                                 [global _start]
     10                                 
     11                                 _start:
     12                                 
     13 00000000 48C7C000000000          mov rax,0
     14 00000007 48C7C202000000          mov rdx,2
-    15 0000000E 48C7C6[00000000]        mov rsi,store
-    16 00000015 0F05                    syscall
-    17                                 
-    18 00000017 48C7C000000000          mov rax,0
-    19 0000001E 48C7C6[00000000]        mov rsi,input
-    20 00000025 0F05                    syscall
-    21                                 
-    22 00000027 48C7C001000000          mov rax,1
-    23 0000002E 48C7C202000000          mov rdx,2
-    24 00000035 48C7C700000000          mov rdi,0
-    25 0000003C 0F05                    syscall
-    26                                 
-    27 0000003E 48C7C001000000          mov rax,1
-    28 00000045 48C7C6[00000000]        mov rsi,store
-    29 0000004C 0F05                    syscall
-    30                                 
-    31 0000004E 48C7C03C000000          mov rax,60
-    32 00000055 48C7C700000000          mov rdi,0
-    33 0000005C 0F05                    syscall
+    15 0000000E 48C7C700000000          mov rdi,0
+    16 00000015 48C7C6[00000000]        mov rsi,store
+    17 0000001C 0F05                    syscall
+    18                                 
+    19 0000001E 48C7C000000000          mov rax,0
+    20 00000025 48C7C202000000          mov rdx,2
+    21 0000002C 48C7C700000000          mov rdi,0
+    22 00000033 48C7C6[00000000]        mov rsi,input
+    23 0000003A 0F05                    syscall
+    24                                 
+    25 0000003C 48C7C001000000          mov rax,1
+    26 00000043 48C7C201000000          mov rdx,1
+    27 0000004A 48C7C701000000          mov rdi,1
+    28 00000051 0F05                    syscall
+    29                                 
+    30 00000053 48C7C001000000          mov rax,1
+    31 0000005A 48C7C201000000          mov rdx,1
+    32 00000061 48C7C701000000          mov rdi,1
+    33 00000068 48C7C6[00000000]        mov rsi,newline
+    34 0000006F 0F05                    syscall
+    35                                 
+    36 00000071 48C7C001000000          mov rax,1
+    37 00000078 48C7C201000000          mov rdx,1
+    38 0000007F 48C7C701000000          mov rdi,1
+    39 00000086 48C7C6[00000000]        mov rsi,store
+    40 0000008D 0F05                    syscall
+    41                                 
+    42 0000008F 48C7C001000000          mov rax,1
+    43 00000096 48C7C201000000          mov rdx,1
+    44 0000009D 48C7C701000000          mov rdi,1
+    45 000000A4 48C7C6[00000000]        mov rsi,newline
+    46 000000AB 0F05                    syscall
+    47                                 
+    48 000000AD 48C7C03C000000          mov rax,60
+    49 000000B4 48C7C700000000          mov rdi,0
+    50 000000BB 0F05                    syscall
