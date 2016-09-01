@@ -37,8 +37,6 @@ public class QuickSort {
         int low=begin,high=end;
         while (low <= high)
         {
-
-
             while (a[low] < pivot) { low++; }
             while (a[high] > pivot) { high--; }
 
