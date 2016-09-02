@@ -173,8 +173,8 @@ print_sign:
 
 print_sign_negative:
 	mov 	rax,[result]
-	cmp		rax,0
-	jge		display
+	cmp	rax,0
+	jge	display
 	mov 	rax,1
 	mov 	rdx,1
 	mov		rdi,1
