@@ -7,10 +7,13 @@ numInput1			dq 	0
 numInput2			dq 	0
 dummyRead			dq	0
 operand				dq	0
-character 		dq	0
+character 			dq	0
+remainder			dq 	0
+positive			dq	43
 negative 			dq	45
 newline 			dq 	0x0a
-error_message	dq  "ERROR"
+error_message			dq  	"ERROR"
+remainder_message		dq 	" r "
 
 	section .text
 	global _start
@@ -48,8 +51,8 @@ _start:
 	syscall
 
 	mov 	rax,0
-	mov 	rdx,2
-	mov	  rdi,0
+	mov 	rdx,3
+	mov	rdi,0
 	mov 	rsi,dummyRead
 
 	mov 	r9,6
@@ -149,11 +152,22 @@ divide_numbers:
 	mov 	rax,[number1]
 	div   qword [number2]
 	mov 	[result],rax
+	mov 	[remainder],rdx
 	jmp 	print_sign
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 print_sign:
+	mov 	rax,[result]
+	cmp 	rax,0
+	jl 	print_sign_negative
+	mov 	rax,1
+	mov 	rdi,1
+	mov 	rdx,1
+	mov 	rsi,positive
+	jmp display
+
+print_sign_negative:
 	mov 	rax,[result]
 	cmp		rax,0
 	jge		display
@@ -165,16 +179,16 @@ print_sign:
 
 display:
 
-	mov 	r8,1000000
+	mov 	r8,1000000000000
 	mov 	rax,[result]
 	mov 	rdx,0
 	div 	r8
 	cmp 	rax,0
-	jg		overflow
+	jg	overflow
 
 	mov 	rax,[result]
 	cmp 	rax,0
-	jge		display_loop
+	jge	display_loop
 	neg 	rax
 	mov 	[result],rax
 
@@ -195,25 +209,43 @@ display_loop:
 
 	mov 	rax,1
 	mov 	rdx,1
-	mov		rdi,1
+	mov	rdi,1
 	mov  	rsi,character
 	syscall
 
-	cmp r8,1
+	cmp 	r8,1
 	jg 	display_loop
-	jmp exit
+	jmp 	print_remainder
 
 overflow:
 	mov 	rax,1
 	mov 	rdx,5
-	mov		rdi,1
+	mov	rdi,1
 	mov  	rsi,error_message
+	syscall
+	jmp 	exit
+
+print_remainder:
+	mov 	rax,[remainder]
+	cmp 	rax,0
+	je	exit
+	mov 	rax,1
+	mov 	rdi,1
+	mov 	rdx,4
+	mov 	rsi,remainder_message
+	syscall	
+
+	add  qword 	[remainder]
+	mov 	rax,1
+	mov 	rdx,1
+	mov 	rdi,1
+	mov 	rsi,remainder
 	syscall
 
 exit:
 	;mov 	rax,1
 	;mov 	rdx,1
-	;mov		rdi,1
+	;mov	rdi,1
 	;mov  	rsi,newline
 	;syscall
 
