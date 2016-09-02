@@ -51,26 +51,29 @@ _start:
 	syscall
 
 	mov 	rax,0
-	mov 	rdx,3
+	mov 	rdx,2
 	mov	rdi,0
 	mov 	rsi,dummyRead
+	syscall
+
+
 
 	mov 	r9,6
 convertNum1:
 
 	mov 	r8,[numInput1]
 	mov 	al,[numInput1]		; Converting from ASCII to decimal
-	sub	  al,48
-	movzx r12,al
-	mov		rax,1 			; Multiplying correct power of 10
+	sub	al,48
+	movzx 	r12,al
+	mov	rax,1 			; Multiplying correct power of 10
 	mov 	r10,r9
-	sub		r10,1
-	mov		r11,10			; Register I will use to multiply with
+	sub	r10,1
+	mov	r11,10			; Register I will use to multiply with
 
 num1_mul10:
 	cmp 	r10,0
-	je	  num1_end_mul10
-	mul	  r11
+	je	num1_end_mul10
+	mul	r11
 	dec 	r10
 	cmp	  r10,0
 	jg	   num1_mul10
@@ -99,11 +102,11 @@ convertNum2:
 
 num2_mul10:
 	cmp 	r10,0
-	je	  num2_end_mul10
-	mul	  r11
+	je	num2_end_mul10
+	mul	r11
 	dec 	r10
-	cmp	  r10,0
-	jg	   num2_mul10
+	cmp	r10,0
+	jg	num2_mul10
 
 num2_end_mul10:
 	mul 	r12
@@ -132,7 +135,7 @@ add_numbers:
 	mov 	rax,[number1]
 	mov 	[result],rax
 	mov 	rax,[number2]
-	add   qword 	[result],rax
+	add   	qword	[result],rax
 	jmp 	print_sign
 
 subtract_numbers:
@@ -165,7 +168,8 @@ print_sign:
 	mov 	rdi,1
 	mov 	rdx,1
 	mov 	rsi,positive
-	jmp display
+	syscall
+	jmp 	display
 
 print_sign_negative:
 	mov 	rax,[result]
@@ -235,7 +239,7 @@ print_remainder:
 	mov 	rsi,remainder_message
 	syscall	
 
-	add  qword 	[remainder]
+	add  qword [remainder],48
 	mov 	rax,1
 	mov 	rdx,1
 	mov 	rdi,1
@@ -243,11 +247,11 @@ print_remainder:
 	syscall
 
 exit:
-	;mov 	rax,1
-	;mov 	rdx,1
-	;mov	rdi,1
-	;mov  	rsi,newline
-	;syscall
+	mov 	rax,1
+	mov 	rdx,1
+	mov	rdi,1
+	mov  	rsi,newline
+	syscall
 
 	mov 	rax,60
 	mov 	rdi,0
