@@ -1,22 +1,34 @@
 # include <unistd.h>
 # include <stdio.h>
-# include <sys/wait.h>
 # include <stdlib.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <stdlib.h>
+# include <sched.h>
+
+#define SIZESTACK ( 1024 * 1024)
 
 void printAndIncrement(pid_t pid);
 int globalCounter = 0;
 
 int main()
 {
-  void * stack;
-  stack = malloc(FIBER_STACK);
-  pid_t pid = clone(&printAndIncrement, (char *)stack + FIBER_STACK, CLONE_VM, 0);
+  char * stack;
+  char * stackhead;
+  int status;
+  stack = (char *) malloc(SIZESTACK);
+  stackhead = stack + SIZESTACK - 1;
+
+  pid_t pid;
+  pid = clone(printAndIncrement, stackhead, SIGCHLD, pid);
   printAndIncrement(pid);
+
+  waitpid(pid,&status,0);
+
   printf("\n");
   printf("Global counter : %d\n",globalCounter);
   return 0;
 }
-
 
 void printAndIncrement(pid_t pid)
 {

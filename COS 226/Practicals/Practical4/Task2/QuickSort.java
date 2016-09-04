@@ -16,6 +16,11 @@ public class QuickSort {
     }
 
 
+    public static void quickSort(int [] a)
+    {
+        quickSort(a,0,a.length-1);
+    }
+
 	public static void quickSort(int[] a, int begin, int end)
 	{
 	    if (begin >= end) return;

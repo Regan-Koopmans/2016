@@ -1,6 +1,5 @@
 make:
-	cc -c task1.c
-	cc task1.o -o task1
+	gcc task1.c -o task1 -pthread
 
 run:
 	./task1
