@@ -153,6 +153,9 @@ multiply_numbers:
 
 divide_numbers:
 	mov 	rax,[number1]
+	mov 	r8,[number2]
+	cmp 	r8,0
+	je 		overflow
 	div   qword [number2]
 	mov 	[result],rax
 	mov 	[remainder],rdx
@@ -188,7 +191,7 @@ display:
 	mov 	rdx,0
 	div 	r8
 	cmp 	rax,0
-	jg	overflow
+	;jg	overflow
 
 	mov 	rax,[result]
 	cmp 	rax,0
@@ -237,7 +240,7 @@ print_remainder:
 	mov 	rdi,1
 	mov 	rdx,4
 	mov 	rsi,remainder_message
-	syscall	
+	syscall
 
 	add  qword [remainder],48
 	mov 	rax,1

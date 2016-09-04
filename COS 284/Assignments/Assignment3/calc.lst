@@ -139,125 +139,128 @@
    139 0000019C 48890425[00000000]      mov [result],rax
    140 000001A4 488B0425[00000000]      mov rax,[number2]
    141 000001AC 48010425[00000000]      add qword [result],rax
-   142 000001B4 EB5C                    jmp print_sign
+   142 000001B4 EB6E                    jmp print_sign
    143                                 
    144                                 subtract_numbers:
    145 000001B6 488B0425[00000000]      mov rax,[number1]
    146 000001BE 48890425[00000000]      mov [result],rax
    147 000001C6 488B0425[00000000]      mov rax,[number2]
    148 000001CE 48290425[00000000]      sub qword [result],rax
-   149 000001D6 EB3A                    jmp print_sign
+   149 000001D6 EB4C                    jmp print_sign
    150                                 
    151                                 multiply_numbers:
    152 000001D8 488B0425[00000000]      mov rax,[number1]
    153 000001E0 48F72425[00000000]      mul qword [number2]
    154 000001E8 48890425[00000000]      mov [result],rax
-   155 000001F0 EB20                    jmp print_sign
+   155 000001F0 EB32                    jmp print_sign
    156                                 
    157                                 divide_numbers:
    158 000001F2 488B0425[00000000]      mov rax,[number1]
-   159 000001FA 48F73425[00000000]      div qword [number2]
-   160 00000202 48890425[00000000]      mov [result],rax
-   161 0000020A 48891425[00000000]      mov [remainder],rdx
-   162 00000212 EBFE                    jmp print_sign
-   163                                 
-   164                                 
-   165                                 
-   166                                 print_sign:
-   167 00000214 488B0425[00000000]      mov rax,[result]
-   168 0000021C 4883F800                cmp rax,0
-   169 00000220 7C1E                    jl print_sign_negative
-   170 00000222 48C7C001000000          mov rax,1
-   171 00000229 48C7C701000000          mov rdi,1
-   172 00000230 48C7C201000000          mov rdx,1
-   173 00000237 48C7C6[00000000]        mov rsi,positive
-   174 0000023E 0F05                    syscall
-   175 00000240 EB2A                    jmp display
-   176                                 
-   177                                 print_sign_negative:
-   178 00000242 488B0425[00000000]      mov rax,[result]
-   179 0000024A 4883F800                cmp rax,0
-   180 0000024E 7D1C                    jge display
-   181 00000250 48C7C001000000          mov rax,1
-   182 00000257 48C7C201000000          mov rdx,1
-   183 0000025E 48C7C701000000          mov rdi,1
-   184 00000265 48C7C6[00000000]        mov rsi,negative
-   185 0000026C 0F05                    syscall
-   186                                 
-   187                                 display:
-   188                                 
-   189 0000026E 49B80010A5D4E80000-     mov r8,1000000000000
-   190 0000026E 00                 
-   191 00000278 488B0425[00000000]      mov rax,[result]
-   192 00000280 48C7C200000000          mov rdx,0
-   193 00000287 49F7F0                  div r8
-   194 0000028A 4883F800                cmp rax,0
-   195 0000028E 7F7A                    jg overflow
-   196                                 
-   197 00000290 488B0425[00000000]      mov rax,[result]
-   198 00000298 4883F800                cmp rax,0
-   199 0000029C 7D09                    jge display_loop
-   200 0000029E 48F7D8                  neg rax
-   201 000002A1 48890425[00000000]      mov [result],rax
-   202                                 
-   203                                 display_loop:
-   204 000002A9 49C7C20A000000          mov r10,10
-   205 000002B0 4C89C0                  mov rax,r8
-   206 000002B3 48C7C200000000          mov rdx,0
-   207 000002BA 49F7F2                  div r10
-   208 000002BD 4989C0                  mov r8,rax
-   209                                 
-   210 000002C0 488B0425[00000000]      mov rax,[result]
-   211 000002C8 48C7C200000000          mov rdx,0
-   212 000002CF 49F7F0                  div r8
-   213                                 
-   214 000002D2 48891425[00000000]      mov [result],rdx
-   215 000002DA 4883C030                add rax,48
-   216 000002DE 48890425[00000000]      mov [character],rax
-   217                                 
-   218 000002E6 48C7C001000000          mov rax,1
-   219 000002ED 48C7C201000000          mov rdx,1
-   220 000002F4 48C7C701000000          mov rdi,1
-   221 000002FB 48C7C6[00000000]        mov rsi,character
-   222 00000302 0F05                    syscall
-   223                                 
-   224 00000304 4983F801                cmp r8,1
-   225 00000308 7F9D                    jg display_loop
-   226 0000030A EB1E                    jmp print_remainder
-   227                                 
-   228                                 overflow:
-   229 0000030C 48C7C001000000          mov rax,1
-   230 00000313 48C7C205000000          mov rdx,5
-   231 0000031A 48C7C701000000          mov rdi,1
-   232 00000321 48C7C6[00000000]        mov rsi,error_message
-   233 00000328 0F05                    syscall
-   234 0000032A EB51                    jmp exit
-   235                                 
-   236                                 print_remainder:
-   237 0000032C 488B0425[00000000]      mov rax,[remainder]
-   238 00000334 4883F800                cmp rax,0
-   239 00000338 7443                    je exit
-   240 0000033A 48C7C001000000          mov rax,1
-   241 00000341 48C7C701000000          mov rdi,1
-   242 00000348 48C7C204000000          mov rdx,4
-   243 0000034F 48C7C6[00000000]        mov rsi,remainder_message
-   244 00000356 0F05                    syscall
-   245                                 
-   246 00000358 48830425[00000000]-     add qword [remainder],48
-   247 00000358 30                 
-   248 00000361 48C7C001000000          mov rax,1
-   249 00000368 48C7C201000000          mov rdx,1
-   250 0000036F 48C7C701000000          mov rdi,1
-   251 00000376 48C7C6[00000000]        mov rsi,remainder
-   252 0000037D 0F05                    syscall
-   253                                 
-   254                                 exit:
-   255 0000037F 48C7C001000000          mov rax,1
-   256 00000386 48C7C201000000          mov rdx,1
-   257 0000038D 48C7C701000000          mov rdi,1
-   258 00000394 48C7C6[00000000]        mov rsi,newline
-   259 0000039B 0F05                    syscall
-   260                                 
-   261 0000039D 48C7C03C000000          mov rax,60
-   262 000003A4 48C7C700000000          mov rdi,0
-   263 000003AB 0F05                    syscall
+   159 000001FA 4C8B0425[00000000]      mov r8,[number2]
+   160 00000202 4983F800                cmp r8,0
+   161 00000206 0F840A010000            je overflow
+   162 0000020C 48F73425[00000000]      div qword [number2]
+   163 00000214 48890425[00000000]      mov [result],rax
+   164 0000021C 48891425[00000000]      mov [remainder],rdx
+   165 00000224 EBFE                    jmp print_sign
+   166                                 
+   167                                 
+   168                                 
+   169                                 print_sign:
+   170 00000226 488B0425[00000000]      mov rax,[result]
+   171 0000022E 4883F800                cmp rax,0
+   172 00000232 7C1E                    jl print_sign_negative
+   173 00000234 48C7C001000000          mov rax,1
+   174 0000023B 48C7C701000000          mov rdi,1
+   175 00000242 48C7C201000000          mov rdx,1
+   176 00000249 48C7C6[00000000]        mov rsi,positive
+   177 00000250 0F05                    syscall
+   178 00000252 EB2A                    jmp display
+   179                                 
+   180                                 print_sign_negative:
+   181 00000254 488B0425[00000000]      mov rax,[result]
+   182 0000025C 4883F800                cmp rax,0
+   183 00000260 7D1C                    jge display
+   184 00000262 48C7C001000000          mov rax,1
+   185 00000269 48C7C201000000          mov rdx,1
+   186 00000270 48C7C701000000          mov rdi,1
+   187 00000277 48C7C6[00000000]        mov rsi,negative
+   188 0000027E 0F05                    syscall
+   189                                 
+   190                                 display:
+   191                                 
+   192 00000280 49B80010A5D4E80000-     mov r8,1000000000000
+   193 00000280 00                 
+   194 0000028A 488B0425[00000000]      mov rax,[result]
+   195 00000292 48C7C200000000          mov rdx,0
+   196 00000299 49F7F0                  div r8
+   197 0000029C 4883F800                cmp rax,0
+   198                                 
+   199                                 
+   200 000002A0 488B0425[00000000]      mov rax,[result]
+   201 000002A8 4883F800                cmp rax,0
+   202 000002AC 7D09                    jge display_loop
+   203 000002AE 48F7D8                  neg rax
+   204 000002B1 48890425[00000000]      mov [result],rax
+   205                                 
+   206                                 display_loop:
+   207 000002B9 49C7C20A000000          mov r10,10
+   208 000002C0 4C89C0                  mov rax,r8
+   209 000002C3 48C7C200000000          mov rdx,0
+   210 000002CA 49F7F2                  div r10
+   211 000002CD 4989C0                  mov r8,rax
+   212                                 
+   213 000002D0 488B0425[00000000]      mov rax,[result]
+   214 000002D8 48C7C200000000          mov rdx,0
+   215 000002DF 49F7F0                  div r8
+   216                                 
+   217 000002E2 48891425[00000000]      mov [result],rdx
+   218 000002EA 4883C030                add rax,48
+   219 000002EE 48890425[00000000]      mov [character],rax
+   220                                 
+   221 000002F6 48C7C001000000          mov rax,1
+   222 000002FD 48C7C201000000          mov rdx,1
+   223 00000304 48C7C701000000          mov rdi,1
+   224 0000030B 48C7C6[00000000]        mov rsi,character
+   225 00000312 0F05                    syscall
+   226                                 
+   227 00000314 4983F801                cmp r8,1
+   228 00000318 7F9D                    jg display_loop
+   229 0000031A EB1E                    jmp print_remainder
+   230                                 
+   231                                 overflow:
+   232 0000031C 48C7C001000000          mov rax,1
+   233 00000323 48C7C205000000          mov rdx,5
+   234 0000032A 48C7C701000000          mov rdi,1
+   235 00000331 48C7C6[00000000]        mov rsi,error_message
+   236 00000338 0F05                    syscall
+   237 0000033A EB51                    jmp exit
+   238                                 
+   239                                 print_remainder:
+   240 0000033C 488B0425[00000000]      mov rax,[remainder]
+   241 00000344 4883F800                cmp rax,0
+   242 00000348 7443                    je exit
+   243 0000034A 48C7C001000000          mov rax,1
+   244 00000351 48C7C701000000          mov rdi,1
+   245 00000358 48C7C204000000          mov rdx,4
+   246 0000035F 48C7C6[00000000]        mov rsi,remainder_message
+   247 00000366 0F05                    syscall
+   248                                 
+   249 00000368 48830425[00000000]-     add qword [remainder],48
+   250 00000368 30                 
+   251 00000371 48C7C001000000          mov rax,1
+   252 00000378 48C7C201000000          mov rdx,1
+   253 0000037F 48C7C701000000          mov rdi,1
+   254 00000386 48C7C6[00000000]        mov rsi,remainder
+   255 0000038D 0F05                    syscall
+   256                                 
+   257                                 exit:
+   258 0000038F 48C7C001000000          mov rax,1
+   259 00000396 48C7C201000000          mov rdx,1
+   260 0000039D 48C7C701000000          mov rdi,1
+   261 000003A4 48C7C6[00000000]        mov rsi,newline
+   262 000003AB 0F05                    syscall
+   263                                 
+   264 000003AD 48C7C03C000000          mov rax,60
+   265 000003B4 48C7C700000000          mov rdi,0
+   266 000003BB 0F05                    syscall
