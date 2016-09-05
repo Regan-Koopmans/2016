@@ -10,7 +10,7 @@
 
 #define SIZESTACK ( 1024 * 1024)
 
-void printAndIncrement(pid_t pid);
+void * printAndIncrement();
 int globalCounter = 0;
 
 int main()
@@ -22,19 +22,27 @@ int main()
   stackhead = stack + SIZESTACK - 1;
 
   pid_t pid;
-  pid = clone(printAndIncrement, stackhead, CLONE_VM|SIGCHLD, (pid_t)pid);
-  printAndIncrement(pid);
+  pid = clone(&printAndIncrement, stackhead, CLONE_VM|SIGCHLD, NULL);
+
+  for (int y = 0; y < 20; y++)
+  {
+    printf("p");
+    ++globalCounter;
+    //fflush(0);
+    usleep(250000);
+  }
   waitpid(pid,&status,0);
+  fflush(0);
+
+  //printf("Child is all done?");
 
   printf("\n");
   printf("Global counter : %d\n",globalCounter);
   return 0;
 }
 
-void printAndIncrement(pid_t pid)
+void * printAndIncrement()
 {
-  if (pid == 0)
-  {
     for (int x = 0; x < 20; x++)
     {
       printf("c");
@@ -42,16 +50,6 @@ void printAndIncrement(pid_t pid)
       fflush(0);
       usleep(250000);
     }
-    exit(0);
-  }
-  else
-  {
-    for (int y = 0; y < 20; y++)
-    {
-      printf("p");
-      ++globalCounter;
-      fflush(0);
-      usleep(250000);
-    }
-  }
+    //printf("child done!");
+    return 0;
 }
