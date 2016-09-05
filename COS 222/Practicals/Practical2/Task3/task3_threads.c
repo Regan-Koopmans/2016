@@ -22,7 +22,7 @@ int main()
   stackhead = stack + SIZESTACK - 1;
 
   pid_t pid;
-  pid = clone(printAndIncrement, stackhead, CLONE_VM|SIGCHLD, pid);
+  pid = clone(printAndIncrement, stackhead, CLONE_VM|SIGCHLD, (pid_t)pid);
   printAndIncrement(pid);
   waitpid(pid,&status,0);
 
@@ -46,7 +46,7 @@ void printAndIncrement(pid_t pid)
   }
   else
   {
-    for (int x = 0; x < 20; x++)
+    for (int y = 0; y < 20; y++)
     {
       printf("p");
       ++globalCounter;
