@@ -4,7 +4,7 @@
 
     section .data
 
-matrix_1_1          dq      10.234
+matrix_1_1          dq      0
 matrix_1_2          dq      0
 matrix_2_1          dq      0
 matrix_2_2          dq      0
@@ -13,7 +13,7 @@ matrix_2_norm       dq      0
 result_dub          dq      0
 result              dq      0
 
-msg                 dq      "The dot product of (%.2f,%.2f) and (%.2f,%.2f) is: "
+msg                 dq      "The dot product of (%.2f,%.2f) and (%.2f,%.2f) is "
 result_msg          dq      "(%.2f)"
 newline             dq      0xa
 
@@ -63,7 +63,6 @@ dotProduct:
 
     divsd       xmm3,xmm5
     divsd       xmm4,xmm5
-
 
     mulsd       xmm0,xmm3
     mulsd       xmm1,xmm4

@@ -1,5 +1,5 @@
 # define _GNU_SOURCE
-# include <sched.h>
+# include <linux/sched.h>
 
 # include <unistd.h>
 # include <stdio.h>
@@ -10,7 +10,7 @@
 
 #define SIZESTACK ( 1024 * 1024)
 
-void * printAndIncrement();
+void  printAndIncrement();
 int globalCounter = 0;
 
 int main()
@@ -22,13 +22,13 @@ int main()
   stackhead = stack + SIZESTACK - 1;
 
   pid_t pid;
-  pid = clone(&printAndIncrement, stackhead, CLONE_VM|SIGCHLD, NULL);
+  pid = clone(printAndIncrement, stackhead,CLONE_FILES|CLONE_VM|SIGCHLD, NULL);
 
   for (int y = 0; y < 20; y++)
   {
-    printf("p");
+    write(STDOUT_FILENO,"p",2);
     ++globalCounter;
-    //fflush(0);
+    fflush(0);
     usleep(250000);
   }
   waitpid(pid,&status,0);
@@ -41,15 +41,13 @@ int main()
   return 0;
 }
 
-void * printAndIncrement()
+void  printAndIncrement()
 {
     for (int x = 0; x < 20; x++)
     {
-      printf("c");
+      write(STDOUT_FILENO,"c",2);
       ++globalCounter;
       fflush(0);
       usleep(250000);
     }
-    //printf("child done!");
-    return 0;
 }

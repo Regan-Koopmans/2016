@@ -1,4 +1,5 @@
 # include <pthread.h>
+# include <unistd.h>
 # include <stdio.h>
 
 void * printAndIncrement(void * id);
@@ -25,6 +26,7 @@ void * printAndIncrement(void * id)
     {
         printf("p");
         ++globalCounter;
+        sleep(1);
         fflush(0);
     }
   }
@@ -34,6 +36,7 @@ void * printAndIncrement(void * id)
     {
       printf("c");
       ++globalCounter;
+      sleep(1);
       fflush(0);
     }
   }

@@ -10,7 +10,7 @@ parameter3     dq       0
 
 
     section .text
-    global pseudoRC             ; Tells the linker that this function exists :D
+    global pseudoRC             ; Tells the linker that this function exists 
 
 pseudoRC:
     mov     [parameter1],rdi

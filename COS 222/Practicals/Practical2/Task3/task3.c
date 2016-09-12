@@ -1,10 +1,12 @@
+# define _GNU_SOURCE
+# include <linux/sched.h>
+
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <stdlib.h>
-# include <sched.h>
 
 #define SIZESTACK ( 1024 * 1024)
 
