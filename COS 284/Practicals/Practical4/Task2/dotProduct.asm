@@ -13,7 +13,7 @@ matrix_2_norm       dq      0
 result_dub          dq      0
 result              dq      0
 
-msg                 dq      "The dot product of (%.2f,%.2f) and (%.2f,%.2f) is "
+msg                 dq      "The dot product of (%.2f,%.2f) and (%.2f,%.2f) is: "
 result_msg          dq      "(%.2f)"
 newline             dq      0xa
 

@@ -19,3 +19,7 @@ swapNums.o: swapNums.asm
 run: 
 	./task3.out $(RUN_ARGS)
 
+
+clean:
+	rm *.o
+	rm *.out
