@@ -12,7 +12,7 @@ num1 	dq 	0
 swapNums:
     push    rbp
     mov     rbp,rsp
-    mov     r8,10
+    mov     r8,6
 
     movss  xmm0,[rax]
     movss  xmm1,[rcx]
@@ -41,7 +41,7 @@ continue:
 
     dec     r8
     cmp     r8,0
-    jl      swap1
+    jg      swap1
 
     cvtsd2ss xmm0,xmm0
     cvtsd2ss xmm1,xmm1
