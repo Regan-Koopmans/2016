@@ -13,5 +13,5 @@ public abstract class ConsensusProtocol<T> implements Consensus<T>
     proposed.set(ThreadID.get(), value);
   }
 
-  abstract public T decide(T value);
+    public T decide(T value);
 }

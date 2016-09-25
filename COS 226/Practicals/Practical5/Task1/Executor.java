@@ -47,8 +47,13 @@ public class Executor
 
 	public static void main(String[] args)
   {
-    Executor executor = new Executor(100);
-
+    Executor executor = new Executor(5);
     executor.run();
+
+    //System.out.println("\nROUND 2\n");
+
+    //executor = new Executor(5);
+    //executor.run();
+
   }
 }

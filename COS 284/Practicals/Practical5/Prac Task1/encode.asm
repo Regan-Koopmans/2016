@@ -19,9 +19,9 @@ array_size            dq    0
 
   ;; External Functions
 
-  extern printf
-  extern strlen
-  extern putchar
+  extern printf                 ; Prints formatted strings
+  extern strlen                 ; Determines the length of the array
+  extern putchar                ; Prints individual characters
 
   ;; Scope resolution
 
@@ -53,6 +53,8 @@ while:
   cmp   r8,r9
   jg   exit
 
+  ;; Determine whether current char is equal to a previous one
+
   mov   rbx,[input_array_ptr]
   mov   al,[rbx]
   mov   dl,[prev_char]
@@ -72,7 +74,11 @@ diff_char:
   mov   rbx,[input_array_ptr]
   mov   rax,[rbx]
   mov   [prev_char],rax
-	mov   qword [same_char_count],1
+
+  ;; Set same counter to 1
+  ;; Incrememt global character counter
+
+  mov   qword [same_char_count],1
 	inc   qword [global_char_count]
 	jmp   while
 
@@ -84,7 +90,7 @@ same_char:
 
 exit:
 
-  ;; Print final last line
+  ;; Print final new line character
 
   mov  rdi,[newline]
   call putchar

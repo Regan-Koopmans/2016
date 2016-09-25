@@ -7,7 +7,7 @@ ifeq (run,$(firstword $(MAKECMDGOALS)))
 endif
 
 
-all: task5.o .o
+all: task5.o recursive.o
 	gcc task5.o recursive.o -o task5.out -m64 -static
 
 task5.o: task5.c

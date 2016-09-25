@@ -1,0 +1,376 @@
+% Created 2016-09-22 Thu 09:49
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\author{regan}
+\date{\today}
+\title{COS 222 - Semester Test 2 Notes}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.5.1 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Chapter 7 - Memory Management}
+\label{sec-1}
+
+\subsection{Memory Management Requirements}
+\label{sec-1-1}
+
+A Frame is a fixed-length block of main memory
+
+A Page is a fixed-length block of data that resides in
+secondary memory (such as a disk). A page may temporarily
+be copied into a frame of main memory.
+
+A Segment is a variable-length block of data that resides
+in secondary memory. An entire segment may be temporary
+copied into an available region of main memory (this process
+is known as segmentation) or the segment may be divided into
+pages which can individually be copied into main memory
+(combined segmentation and paging).
+
+\subsubsection{Relocation}
+\label{sec-1-1-1}
+
+We need our system to be able to move the location where a
+process.
+
+\subsubsection{Protection}
+\label{sec-1-1-2}
+
+Each process should protected against unwanted interference
+by other processes, whether accidental or intentional. Thus
+programs in other processes should not be able to reference
+memory loctions in a process for reading or writing without
+sufficient permission.
+
+\subsubsection{Sharing}
+\label{sec-1-1-3}
+
+In order to minimize redundancy, we would ideally like 
+processes to be able to share blocks of memory, otherwise
+there will be numerous instances where this data would have
+to be duplicated.
+
+\subsubsection{Logical Organization}
+\label{sec-1-1-4}
+
+The main memory of a computer system is most likely to be
+arranged as a linear, or one-dimensional, address space of
+either bytes or words.
+
+\subsubsection{Physical Organization}
+\label{sec-1-1-5}
+
+Memory is organised in at least two levels, namely primary
+and secondary memory
+
+The main memory available for a program plus its data may be
+insufficient. In that case, the programmer must engage in a
+practise known as overlaying.
+
+
+\subsection{Memory Partitioning}
+\label{sec-1-2}
+
+\subsubsection{Fixed Partitioning}
+\label{sec-1-2-1}
+
+This is the idea that memory is split into certain sizes
+
+\begin{enumerate}
+\item Partition Sizes
+\label{sec-1-2-1-1}
+
+Main memory utilization is extremely inefficient. Any program, 
+no matter how small, occupies an entire partition. A program
+will be forced to occupy some partition that is larger than
+its maximum size. This is wasted space, and we call this waste
+*internal f
+
+\item Placement Algorithm
+\label{sec-1-2-1-2}
+\end{enumerate}
+
+\subsubsection{Dynamic Partitioning}
+\label{sec-1-2-2}
+
+With dynamic partitioning, the partitions are of variable 
+length and number.
+
+\begin{enumerate}
+\item The Buddy System
+\label{sec-1-2-2-1}
+\end{enumerate}
+
+\subsection{Paging}
+\label{sec-1-3}
+
+Both unequal fixed-size and variable-size partitions are 
+inefficient in the use of memory; the former results in
+\textbf{internal fragmentation} and the latter in \textbf{external}
+\textbf{fragmentation}. 
+
+Suppose, however, that memory is partitioned into equal 
+fixed-size chunks that are relatively small, and that 
+each process is also divided into small fixed-sized chunks 
+of the same size. The chunks of the process are known as
+\textbf{pages}, which can be assigned into chunks of memory, \textbf{frames}.
+
+\subsection{Segmentation}
+\label{sec-1-4}
+
+A user program can be subdivided using segmentation, in which
+the program and its associated data are divided into a number
+of \textbf{segments}. It is not required that all segments of all 
+programs be of the same length, although there is a maximum 
+segment length.
+
+The difference between segmentation and paging is that
+
+\begin{center}
+\begin{tabular}{ll}
+Paging & Segmentation\\
+\hline
+Transparent to programmer & Involves the programmer\\
+No seperate protection & \\
+No seperate compiling & \\
+No shared code. & \\
+\end{tabular}
+\end{center}
+
+\section{Chapter 8 - Virtual Memory}
+\label{sec-2}
+
+\subsection{Hardware Control Structures}
+\label{sec-2-1}
+
+\subsubsection{Locality and Virtual Memory}
+\label{sec-2-1-1}
+
+\subsubsection{Paging}
+\label{sec-2-1-2}
+
+\subsubsection{Segmentation}
+\label{sec-2-1-3}
+
+\subsubsection{Combined Paging and Segmentation}
+\label{sec-2-1-4}
+
+\subsubsection{Protection and Sharing}
+\label{sec-2-1-5}
+
+\subsection{Operating System Software}
+\label{sec-2-2}
+
+\subsubsection{Fetch Policy}
+\label{sec-2-2-1}
+
+\begin{enumerate}
+\item Demand Paging
+\label{sec-2-2-1-1}
+
+This is the more simple of the two fetching policies.
+Pages are brought into memory when they are requested,
+which effectively means that a page fault occurs. This
+means that at the beginning of the systems' run-time,
+page faults will be numerous, but will decrease as the
+popular pages get proceedurally added to main memory.
+
+\item Prepaging
+\label{sec-2-2-1-2}
+
+This policy attempts to predict the realistic future page
+use, usually by means of the \textbf{Principle of Locality}. Rather
+than simply retrieving one page, it retrieves a certain
+amount of its neighbours.
+\end{enumerate}
+
+\subsubsection{Placement Policy}
+\label{sec-2-2-2}
+
+
+
+\subsubsection{Replacement Policy}
+\label{sec-2-2-3}
+
+When the memory we have available to load pages becomes full,
+we need certain heuristics that allow us to logically replace
+and evict certain pages.
+
+\begin{enumerate}
+\item Basic Algorithms
+\label{sec-2-2-3-1}
+
+\begin{enumerate}
+\item Optimal
+\label{sec-2-2-3-1-1}
+
+The optimal replacement policy is a theoretical concept
+that could only be implemented with perfect information
+about the past, present and future of the system.
+
+\item Least Recently Used (LRU)
+\label{sec-2-2-3-1-2}
+
+In this replacement policy (which happens to be one of the
+most popular).
+
+\item First-in-First-Out (FIFO)
+\label{sec-2-2-3-1-3}
+
+This replacement policy will pereferencially remove older
+pages to newer ones.
+
+\item Clock
+\label{sec-2-2-3-1-4}
+\end{enumerate}
+
+
+
+\item Page Buffering
+\label{sec-2-2-3-2}
+
+An interesting strategy that can improve paging performance
+and allow the use of a simpler paging replacement policy is
+that of page buffering.
+\end{enumerate}
+
+\subsubsection{Resident Set Management}
+\label{sec-2-2-4}
+
+
+
+\subsubsection{Cleaning Policy}
+\label{sec-2-2-5}
+
+These are the policies used to decide which pages should be removed
+from main memory. These poilicies mirror/complement the fetching
+policies. Cleaning policies are important
+
+\begin{enumerate}
+\item Demand
+\label{sec-2-2-5-1}
+
+With demand cleaning, a page is written out to secondary memory
+only when it has been selected for replacement.
+
+\item Precleaning
+\label{sec-2-2-5-2}
+
+The precleaning policy will write to seconday memory early such
+that pages can be expelled from main memory in batches.
+\end{enumerate}
+
+\subsubsection{Load Control}
+\label{sec-2-2-6}
+
+\subsection{Unix and Solaris Memory Management}
+\label{sec-2-3}
+
+\subsection{Linux Memory Management}
+\label{sec-2-4}
+
+\subsection{Windows Memory Management}
+\label{sec-2-5}
+
+\subsection{Android Memory Management}
+\label{sec-2-6}
+
+\section{Chpater 9 - Uniprocessor Scheduling}
+\label{sec-3}
+
+\subsection{Types of Scheduling}
+\label{sec-3-1}
+
+\subsubsection{Long-Term Scheduling}
+\label{sec-3-1-1}
+
+The long-term scheduler determines which programs are
+admitted.
+
+\subsubsection{Medium-Term Scheduling}
+\label{sec-3-1-2}
+
+Medium-term sheculing is part of the swapping function. This scheduling
+is the decision of what processes should be partiallly or fully in main
+memory.
+
+\subsubsection{Short-Term Scheduling}
+\label{sec-3-1-3}
+
+Also known as the \textbf{dispatcher}, short-term scheduling involves deciding
+what process should be executed next by the processor.
+
+\subsection{Scheduling Algorithms}
+\label{sec-3-2}
+
+\subsubsection{Short-Term Scheduling Criteria}
+\label{sec-3-2-1}
+
+
+
+\subsubsection{The Use of Priorities}
+\label{sec-3-2-2}
+
+
+
+\subsubsection{Alternative Scheduling Policies}
+\label{sec-3-2-3}
+
+
+
+\subsubsection{Performance Comparison}
+\label{sec-3-2-4}
+
+
+
+\subsubsection{Fair-Share Scheduling}
+\label{sec-3-2-5}
+
+
+
+\subsection{Traditional UNIX Scheduling}
+\label{sec-3-3}
+
+\section{Chapter 10 - Multiprocessor Scheduling}
+\label{sec-4}
+
+\subsection{Multiprocessor and Multicore Scheduling}
+\label{sec-4-1}
+
+\subsection{Real-Time Scheduling}
+\label{sec-4-2}
+
+\subsection{Linux Scheduling}
+\label{sec-4-3}
+
+\subsection{UNIX SVR4 Scheduling}
+\label{sec-4-4}
+
+\subsection{Unix FreeBSD Scheduling}
+\label{sec-4-5}
+
+\subsection{Windows Scheduling}
+\label{sec-4-6}
+% Emacs 24.5.1 (Org mode 8.2.10)
+\end{document}

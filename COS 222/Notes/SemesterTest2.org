@@ -1,0 +1,361 @@
+#+STARTUP: indent
+#+TITLE: COS 222 - Semester Test 2 Notes
+
+* Chapter 7 - Memory Management
+
+** Memory Management Requirements
+
+A Frame is a fixed-length block of main memory
+
+A Page is a fixed-length block of data that resides in
+secondary memory (such as a disk). A page may temporarily
+be copied into a frame of main memory.
+
+A Segment is a variable-length block of data that resides
+in secondary memory. An entire segment may be temporary
+copied into an available region of main memory (this process
+is known as segmentation) or the segment may be divided into
+pages which can individually be copied into main memory
+(combined segmentation and paging).
+
+*** Relocation
+
+We need our system to be able to move the location where a
+process.
+
+*** Protection
+
+Each process should protected against unwanted interference
+by other processes, whether accidental or intentional. Thus
+programs in other processes should not be able to reference
+memory loctions in a process for reading or writing without
+sufficient permission.
+
+*** Sharing
+
+In order to minimize redundancy, we would ideally like 
+processes to be able to share blocks of memory, otherwise
+there will be numerous instances where this data would have
+to be duplicated.
+
+*** Logical Organization
+
+The main memory of a computer system is most likely to be
+arranged as a linear, or one-dimensional, address space of
+either bytes or words.
+
+*** Physical Organization
+
+Memory is organised in at least two levels, namely primary
+and secondary memory
+
+The main memory available for a program plus its data may be
+insufficient. In that case, the programmer must engage in a
+practise known as overlaying.
+
+
+** Memory Partitioning
+
+*** Fixed Partitioning
+
+This is the idea that memory is split into certain sizes
+
+**** Partition Sizes
+
+Main memory utilization is extremely inefficient. Any program, 
+no matter how small, occupies an entire partition. A program
+will be forced to occupy some partition that is larger than
+its maximum size. This is wasted space, and we call this waste
+*internal f
+
+**** Placement Algorithm
+
+*** Dynamic Partitioning
+
+With dynamic partitioning, the partitions are of variable 
+length and number.
+
+**** The Buddy System
+
+** Paging
+
+Both unequal fixed-size and variable-size partitions are 
+inefficient in the use of memory; the former results in
+*internal fragmentation* and the latter in *external*
+*fragmentation*. 
+
+Suppose, however, that memory is partitioned into equal 
+fixed-size chunks that are relatively small, and that 
+each process is also divided into small fixed-sized chunks 
+of the same size. The chunks of the process are known as
+*pages*, which can be assigned into chunks of memory, *frames*.
+
+** Segmentation
+
+A user program can be subdivided using segmentation, in which
+the program and its associated data are divided into a number
+of *segments*. It is not required that all segments of all 
+programs be of the same length, although there is a maximum 
+segment length.
+
+The difference between segmentation and paging is that
+
+| Paging                    | Segmentation            |
+|---------------------------+-------------------------|
+| Transparent to programmer | Involves the programmer |
+| No seperate protection    |                         |
+| No seperate compiling     |                         |
+| No shared code.           |                         |
+
+* Chapter 8 - Virtual Memory
+
+** Hardware Control Structures
+
+*** Locality and Virtual Memory
+
+*** Paging
+
+*** Segmentation
+
+*** Combined Paging and Segmentation
+
+*** Protection and Sharing
+
+** Operating System Software
+
+*** Fetch Policy
+
+**** Demand Paging
+
+This is the more simple of the two fetching policies.
+Pages are brought into memory when they are requested,
+which effectively means that a page fault occurs. This
+means that at the beginning of the systems' run-time,
+page faults will be numerous, but will decrease as the
+popular pages get proceedurally added to main memory.
+
+**** Prepaging
+
+This policy attempts to predict the realistic future page
+use, usually by means of the *Principle of Locality*. Rather
+than simply retrieving one page, it retrieves a certain
+amount of its neighbours.
+
+*** Placement Policy
+
+
+
+*** Replacement Policy
+
+When the memory we have available to load pages becomes full,
+we need certain heuristics that allow us to logically replace
+and evict certain pages.
+
+**** Basic Algorithms
+
+***** Optimal
+
+The optimal replacement policy is a theoretical concept
+that could only be implemented with perfect information
+about the past, present and future of the system.
+
+***** Least Recently Used (LRU)
+
+In this replacement policy (which happens to be one of the
+most popular).
+
+***** First-in-First-Out (FIFO)
+
+This replacement policy will pereferencially remove older
+pages to newer ones.
+
+***** Clock
+
+
+
+**** Page Buffering
+
+An interesting strategy that can improve paging performance
+and allow the use of a simpler paging replacement policy is
+that of page buffering.
+
+*** Resident Set Management
+
+
+
+*** Cleaning Policy
+
+These are the policies used to decide which pages should be removed
+from main memory. These poilicies mirror/complement the fetching
+policies. Cleaning policies are important
+
+**** Demand
+
+With demand cleaning, a page is written out to secondary memory
+only when it has been selected for replacement.
+
+**** Precleaning
+
+The precleaning policy will write to seconday memory early such
+that pages can be expelled from main memory in batches.
+
+*** Load Control
+
+** Unix and Solaris Memory Management
+
+** Linux Memory Management
+
+** Windows Memory Management
+
+** Android Memory Management
+
+* Chpater 9 - Uniprocessor Scheduling
+
+** Types of Scheduling
+
+*** Long-Term Scheduling
+
+The long-term scheduler determines which programs are
+admitted.
+
+*** Medium-Term Scheduling
+
+Medium-term sheculing is part of the swapping function. This scheduling
+is the decision of what processes should be partiallly or fully in main
+memory.
+
+*** Short-Term Scheduling
+
+Also known as the *dispatcher*, short-term scheduling involves deciding
+what process should be executed next by the processor.
+
+** Scheduling Algorithms
+
+*** Short-Term Scheduling Criteria
+
+
+
+*** The Use of Priorities
+
+
+
+*** Alternative Scheduling Policies
+
+
+
+*** Performance Comparison
+
+
+
+*** Fair-Share Scheduling
+
+
+
+** Traditional UNIX Scheduling
+
+* Chapter 10 - Multiprocessor Scheduling
+
+** Multiprocessor and Multicore Scheduling
+
+We can classify multiprocessor systems as follows
+
+- Loosely coupled
+- Functionally specialized
+- Tightly coupled multiprocessor
+
+*** Granularity
+
+||
+
+*** Design Issues
+
+**** The Assignment of Processes to Processors
+
+**** THe use of multiprogramming on individual processors
+
+**** Actual Dispatching of processes.
+
+*** Process Scheduling
+
+*** Thread Scheduling
+
+There are four main approaches to scheduling threads, namely:
+
+- Load Scheduling
+- Gang Sheduling
+- Dedicated Processor Assignment
+- Dynamic Scheduling
+
+*** Multicore Thread Scheduling
+
+** Real-Time Scheduling
+
+*** Characteristics of A Real Time Operating System
+
+Real time operating systems have unique requirements 
+in the floowing general areas
+
+- *Determinism*
+- *Responsiveness*
+- *User control*
+- *Reliability*
+- *Fail-soft operation* 
+
+*** Real-Time Scheduling
+
+**** Real-Time Scheduling
+
+**** Deadline Scheduling
+
+Most contemporary real-time operating systems are designed with
+the objective of starting real-time tasks as rapidly as possible,
+and hence emphasize rapid interrupt handling and task dispatching.
+
+Extra information includes:
+
+- Ready Time
+- Starting Deadline
+- Completion Deadline
+- Processing Time
+- Resource Requirements
+- Priority
+- Subtask Structure
+
+*** Deadline Scheduling
+
+*** Rate Monotic Scheduling
+
+Rate monotic scheduling is a scheduling algorithm used in real
+-time scheduling systems, using a static priority scheme. Priority
+is based on cycle duration of the job, and therefore shorter cylces
+implies higher priority. Rate monotic analysis is used in 
+conjunction with these systems to provide scheduling guarantees for
+a particular application.
+
+*** Priority Inversion
+
+Priority inversion is the event where a high priority process is
+forced to wait for a lower priority process. This occurs because
+the lower priority process is holding some resource that the higher
+priority process requires. 
+
+** Linux Scheduling
+
+*** Real-Time Scheduling
+
+
+*** Non-Real-Time Scheduling
+
+** UNIX SVR4 Scheduling
+
+** Unix FreeBSD Scheduling
+
+*** Priority Classes
+
+*** SMP and Multicore Support
+
+** Windows Scheduling
+
+*** Process and Thread Priorities
+
+*** Multiprocessor Schduling
