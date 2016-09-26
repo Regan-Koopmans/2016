@@ -17,7 +17,7 @@ circle_name:      dq          "Circle"
 
 triangle_form:    dq          "0.5*h*b"
 square_form:      dq          "l^2"
-rectangle_form:   dq          "l*b"
+rectangle_form:   dq          "w*l"
 circle_form:      dq          "pi*r^2"
 
   ;; Useful Constants
@@ -51,7 +51,7 @@ shaper:
   movsd       xmm1,[zero]
   ucomisd     xmm0,xmm1
   ja          circle
- 
+
 
 
   ;; Determines the number of positive dimensions

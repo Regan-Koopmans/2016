@@ -1,0 +1,83 @@
+#+STARTUP: indent
+#+TITLE: Week Break Agenda
+
+
+* COS 222
+
+** Studying
+
+[[~/Documents/University/COS 222/Notes/SemesterTest2.org][COS 222]]
+
+** Practical 4
+
+*** TODO : Task 1
+
+**** DONE : Understand the problem.
+
+Had to create a program that counts the number of
+printable and whitespace characters in a file.
+
+**** DONE : Create task 1
+
+[[~/Documents/University/COS 222/Practicals/Practical4/Task1/main.c][main.c]]
+[[~/Documents/University/COS 222/Practicals/Practical4/Task1/makefile][makefile]]
+
+**** TODO : 10 tests minor.
+
+**** TODO : 10 tests medium.
+
+**** TODO : 10 tests EXTREME!
+
+*** Task 2
+
+**** TODO : Understand the problem.
+
+
+
+**** TODO : Create task 2
+
+[[~/Documents/University/COS 222/Practicals/Practical4/Task2/main.c][main.c]]
+[[~/Documents/University/COS 222/Practicals/Practical4/Task2/makefile][makefile]]
+
+**** TODO : 10 tests minor.
+
+**** TODO : 10 tests medium.
+
+**** TODO : 10 tests EXTREME
+
+* COS 226
+
+** Studying
+
+** Practical 6 
+
+* COS 284
+
+** Studying
+
+** Assignment 5
+
+*** TODO : Task 1
+
+For this task I have to add a 1px to an image
+
+**** TODO : Understand the problem.
+
+**** TODO : Create task 1
+
+*** TODO : Task 2
+
+**** TODO : Understand the problem.
+
+**** TODO : Create task 2
+
+*** TODO : Task 3
+
+**** TODO : Understand the problem.
+
+**** TODO : Create task 3
+
+
+* WTW 285
+
+** Studying
