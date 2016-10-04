@@ -22,7 +22,9 @@ printable and whitespace characters in a file.
 [[~/Documents/University/COS 222/Practicals/Practical4/Task1/main.c][main.c]]
 [[~/Documents/University/COS 222/Practicals/Practical4/Task1/makefile][makefile]]
 
-**** TODO : 10 tests minor.
+**** TODO : 10 tets minor.
+
+- Works for small text files
 
 **** TODO : 10 tests medium.
 
@@ -31,7 +33,6 @@ printable and whitespace characters in a file.
 *** Task 2
 
 **** TODO : Understand the problem.
-
 
 
 **** TODO : Create task 2
@@ -43,7 +44,7 @@ printable and whitespace characters in a file.
 
 **** TODO : 10 tests medium.
 
-**** TODO : 10 tests EXTREME
+**** TODO : 10 tests EXTREME!
 
 * COS 226
 
@@ -59,11 +60,37 @@ printable and whitespace characters in a file.
 
 *** TODO : Task 1
 
-For this task I have to add a 1px to an image
-
 **** TODO : Understand the problem.
 
+For this task I have to add a 1px black border to an image.
+In order to to this I will likely have to traverse the whole
+binary file, and based on the location of the pixel, set
+its value to black.
+
+What I need to know:
+
+- The information contained in a bitmap pixel. (perhaps find
+a useful struct defined in c to determine fields)
+
+
+                  ################
+                  #              #
+                  #  some image  #
+                  #              #
+                  ################
+
+The critical sections that need to be changed:
+
+- If the pixel is in the first row (0,y)
+- If the pixel is in the last row (0,max)
+- If the pixel is in the left column (0,y)
+- If the pixel is in the right column (max,y)
+
 **** TODO : Create task 1
+
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 1/border.asm][border.asm]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 1/part1.c][part1.c]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 1/makefile][makefile]]
 
 *** TODO : Task 2
 
@@ -71,13 +98,22 @@ For this task I have to add a 1px to an image
 
 **** TODO : Create task 2
 
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 2/crop.asm][crop.asm]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 2/part2.c][part2.c]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 2/makefile][makefile]]
+
 *** TODO : Task 3
 
 **** TODO : Understand the problem.
 
 **** TODO : Create task 3
 
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 3/intensity.asm][intensity.asm]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 3/part3.c][part3.c]]
+[[~/Documents/University/COS 284/Practicals/Practical5/Assignment Part 3/makefile][makefile]]
 
 * WTW 285
 
 ** Studying
+
+enter sections to study

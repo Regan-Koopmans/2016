@@ -51,7 +51,7 @@ while:
   mov   r8,[global_char_count]
   mov   r9,[array_size]
   cmp   r8,r9
-  jg   exit
+  jg    exit
 
   ;; Determine whether current char is equal to a previous one
 
@@ -83,6 +83,9 @@ diff_char:
 	jmp   while
 
 same_char:
+  mov   rcx,[same_char_count]
+  cmp   rcx,9
+  jge   diff_char
 
   inc   qword  [same_char_count]
   inc   qword  [global_char_count]

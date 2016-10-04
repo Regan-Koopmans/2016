@@ -1,9 +1,19 @@
+                                ; Assignment 5 - Task 3
+
+  ;; Program      : Intensity
+  ;; Author       : Regan Koopmans
+  ;; Description  :
+
 segment .data
-;TODO - Write your code here
 segment .text
-;TODO - Write your code here
 global intensity
-;TODO - Write your code here
-intensity
-	;TODO - Write your code here
-	
+
+intensity:
+
+  push  rbp
+  mov   rbp,rsp
+
+  ;; Insert code to do stuff
+
+  leave
+  ret

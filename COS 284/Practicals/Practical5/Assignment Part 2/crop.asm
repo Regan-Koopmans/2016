@@ -1,9 +1,19 @@
+                                ; Assignment 5 - Task 2
+
+  ;; Program      : Crop
+  ;; Author       : Regan Koopmans
+  ;; Description  :
+
 segment .data
-;TODO - Write your code here
 segment .text
-;TODO - Write your code here
 global crop
-;TODO - Write your code here
-crop
-	;TODO - Write your code here
-	
+
+crop:
+
+  push  rbp
+  mov   rbp,rsp
+
+  ;; Insert code to do stuff
+
+  leave
+  ret

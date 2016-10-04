@@ -1,2 +1,2 @@
 make:
-	gcc main.c -o main
+	g++ -g main.c -o main

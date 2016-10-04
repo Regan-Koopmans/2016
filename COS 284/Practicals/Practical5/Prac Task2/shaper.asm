@@ -7,7 +7,7 @@
 segment .data
 
   ;; Shape Names
-
+3
 triangle_name:    dq          "Triangle"
 square_name:      dq          "Square"
 rectangle_name:   dq          "Rectangle"
@@ -16,8 +16,8 @@ circle_name:      dq          "Circle"
   ;; Shape Formulas
 
 triangle_form:    dq          "0.5*h*b"
-square_form:      dq          "l^2"
-rectangle_form:   dq          "w*l"
+square_form:      dq          "s^2"
+rectangle_form:   dq          "h*w"
 circle_form:      dq          "pi*r^2"
 
   ;; Useful Constants

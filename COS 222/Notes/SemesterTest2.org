@@ -105,7 +105,9 @@ The difference between segmentation and paging is that
 | Transparent to programmer | Involves the programmer |
 | No seperate protection    |                         |
 | No seperate compiling     |                         |
-| No shared code.           |                         |
+| No shared code.           |                         | 
+
+
 
 * Chapter 8 - Virtual Memory
 
@@ -271,11 +273,19 @@ We can classify multiprocessor systems as follows
 
 **** The Assignment of Processes to Processors
 
+If a process is permanently assigned to one processor from
+its activation to completion
+
 **** THe use of multiprogramming on individual processors
 
 **** Actual Dispatching of processes.
 
 *** Process Scheduling
+
+In most traditional multiprocessor systems, processes are not dedicated
+to processors. Rather, there is a single queue for all processors, or if
+some sort of priority scheme used, multiple queues representing priority,
+all feeding to a common pool of porcessors
 
 *** Thread Scheduling
 
@@ -289,6 +299,13 @@ There are four main approaches to scheduling threads, namely:
 *** Multicore Thread Scheduling
 
 ** Real-Time Scheduling
+
+A *hard real-time task* is one that must be met by the deadline,
+otherwise it may cause unacceptable or fatal damage to the systems'
+function. An example of such a task is creating s Process Control
+Block for some essential process.
+
+A *soft real-time task*
 
 *** Characteristics of A Real Time Operating System
 
