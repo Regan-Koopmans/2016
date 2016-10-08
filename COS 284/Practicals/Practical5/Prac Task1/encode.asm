@@ -9,6 +9,7 @@
 
 input_array_ptr       dq    0
 output_fmt            dq    "%c%d"
+newline_string        dq    "",10
 newline               dq    10
 same_char_count	      dq    1
 global_char_count     dq    1
@@ -42,6 +43,12 @@ encode:
   call  strlen
   mov   [array_size],rax
 
+  cmp   rax,0
+  je    exit_no_print
+
+  mov   rax,1
+  mov   [same_char_count],rax
+  mov   [global_char_count],rax
 while:
 
   inc   qword [input_array_ptr]
@@ -51,7 +58,7 @@ while:
   mov   r8,[global_char_count]
   mov   r9,[array_size]
   cmp   r8,r9
-  jg    exit
+  jge   exit
 
   ;; Determine whether current char is equal to a previous one
 
@@ -66,14 +73,14 @@ diff_char:
   ;; Load registers to print the character and repeating count
 
   lea   rdi,[output_fmt]
-  mov   rsi,[prev_char]
-  mov   rdx,[same_char_count]
+	mov   rsi,[prev_char]
+	mov   rdx,[same_char_count]
 
 	call printf
 
   mov   rbx,[input_array_ptr]
   mov   rax,[rbx]
-  mov   [prev_char],rax
+  mov   [prev_char],al
 
   ;; Set same counter to 1
   ;; Incrememt global character counter
@@ -83,6 +90,9 @@ diff_char:
 	jmp   while
 
 same_char:
+  ;; Double check that the counter will not
+  ;; exceed 9.
+
   mov   rcx,[same_char_count]
   cmp   rcx,9
   jge   diff_char
@@ -95,8 +105,13 @@ exit:
 
   ;; Print final new line character
 
-  mov  rdi,[newline]
-  call putchar
+  lea  rdi,[output_fmt]
+  mov  rsi,[prev_char]
+  mov  rdx,[same_char_count]
+  call printf
+exit_no_print:
+  mov  rdi,newline_string
+  call printf
 
   leave
   ret

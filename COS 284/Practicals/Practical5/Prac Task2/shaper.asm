@@ -7,7 +7,7 @@
 segment .data
 
   ;; Shape Names
-3
+
 triangle_name:    dq          "Triangle"
 square_name:      dq          "Square"
 rectangle_name:   dq          "Rectangle"
@@ -83,6 +83,9 @@ shaper:
   cmovg     rdx,rcx
   add       rax,rdx
 
+
+  cmp       rax,0
+  je        exit
   mov       rcx,6
 
   ;; Sorting to make manipulation of numbers easier
@@ -121,7 +124,7 @@ swap3:
 continue:
   dec       rcx
   cmp       rcx,0
-  jg        sort
+  jg        swap1
 
   cmp       rax,4
   je        possible_square
@@ -132,10 +135,9 @@ traingle:
   ;; this being the hypoteneuse.
 
   movsd   xmm4,[half]
-  mulsd   xmm0,xmm1             ; base*height
-  mulsd   xmm0,xmm4            ; *0.5
-  mulsd   xmm0,[half]
-  movsd   [rdi+area],xmm0
+  mulsd   xmm1,xmm2             ; base*height
+  mulsd   xmm1,xmm4            ; *0.5
+  movsd   [rdi+area],xmm1
 
   ;; Set name for triangle
 
@@ -155,6 +157,8 @@ possible_square:
 
   mov   rax,[rectangle_name]
   mov   [rdi+name],rax
+  mov   rax,101
+  mov   [rdi+name+8],rax
 
   ;; Set formula for rectangle
 
@@ -172,11 +176,19 @@ possible_square:
 
 second_check:
   ucomisd xmm1,xmm2
-  jz      square
+  jne     check_fail
+
+
+third_check:
+  ucomisd xmm2,xmm3
+  je      square
 
   ;; Case : if the two sides are not equal
   ;; (therefore the two critical sides)
+check_fail:
 
+  mulsd xmm0,xmm3
+  movsd [rdi+area],xmm0
   jmp   exit
 
 square:

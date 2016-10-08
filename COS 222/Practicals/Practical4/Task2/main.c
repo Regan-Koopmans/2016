@@ -10,9 +10,8 @@ void usage();
 
 int main(int argc, char * argv[])
 {
-  if (argc > 4 || argc < 2) usage();
+  if (argc != 2) usage();
 
-  int bytesToRead = 1024;
 
   // Counter for the number of printable characters.
 
@@ -21,48 +20,43 @@ int main(int argc, char * argv[])
   // Counter for the number of whitespaces
 
   int whitespace = 0;
-  char characters[8192];
 
-  if (argc == 3)
-  {
-    bytesToRead = atoi(argv[2]);
-  }
+  FILE * fd = fopen(argv[1],"r");
+  fseek(fd, 0L, SEEK_END);
+  int size = ftell(fd);
+  fclose(fd);
 
-  if (bytesToRead > 8192)
-  {
-    printf("\n\e[31m\e[1mERROR!\e[0m : A chuck size over 4KB is not permitted.\n\n");
-    exit(1);
-  }
+  int file_handle = open(argv[1],O_RDONLY);
 
-  int file_handle = open(argv[1],O_RDONLY,0);
-  char * mapping = (char *)mmap(NULL,bytesToRead,PROT_READ,MAP_SHARED,file_handle,0);
+  char * mapping = (char *)mmap(NULL,size,PROT_READ,MAP_SHARED,file_handle,0);
 
   if (mapping == MAP_FAILED)
   {
     printf("\n\e[31m\e[1mERROR!\e[0m : Failed to map file to memory.\n\n");
     exit(1);
   }
-
-  for (int x = 0; x < bytesToRead; x++)
+  int x = 0;
+  while (x < size)
   {
     if (isprint(mapping[x]))
       ++printable;
     if (isspace(mapping[x]))
       ++whitespace;
+    ++x;
   }
 
   close(file_handle);
-  printf("\n%d printable characters out of %d bytes.\n",printable,bytesToRead);
-  printf("%d whitespace characters out of %d bytes.\n\n",whitespace,bytesToRead);
+  printf("\n%d printable characters out read.\n",printable);
+  printf("%d whitespace characters out read.\n\n",whitespace);
 
   close(file_handle);
-  munmap(mapping,bytesToRead);
+  munmap(mapping,size);
 
   return 0;
 }
 
 void usage()
 {
-  printf("\n\e[1mUsage\e[0m : program <file> [optional size specifier] \n\n");
+  printf("\n\e[1mUsage\e[0m : program file \n\n");
   exit(0);
 }

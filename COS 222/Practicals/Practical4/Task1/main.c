@@ -3,6 +3,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <ctype.h>
+# include <string.h>
 
 void usage();
 
@@ -28,25 +29,42 @@ int main(int argc, char * argv[])
 
   if (bytesToRead > 8192)
   {
-    printf("\n\e[31m\e[1mERROR!\e[0m : A chuck size over 4KB is not permitted.\n\n");
+    printf("\n\e[31m\e[1mERROR!\e[0m : A chuck size over 8KB is not permitted.\n\n");
     exit(1);
   }
 
-  int file_handle = open(argv[1],O_RDONLY);
-  read(file_handle,characters,bytesToRead);
+  FILE * file_handle = fopen(argv[1],"r");
+  int x;
+  int readCount;
+  int reachedEnd = 0;
 
-  for (int x = 0; x < bytesToRead; x++)
+  readCount = fread(characters, 1,bytesToRead, file_handle);
+  do
+  {
+    x = 0;
+    while(x < readCount)
+    {
+        if (isprint(characters[x]))
+          ++printable;
+        if (isspace(characters[x]))
+          ++whitespace;
+        x++;
+    }
+    readCount = fread(characters, 1,bytesToRead, file_handle);
+  } while (readCount == bytesToRead);
+  for (x = 0; x < readCount; x++)
   {
     if (isprint(characters[x]))
       ++printable;
     if (isspace(characters[x]))
       ++whitespace;
-
   }
 
-  close(file_handle);
-  printf("\n%d printable characters out of %d bytes.\n",printable,bytesToRead);
-  printf("%d whitespace characters out of %d bytes.\n\n",whitespace,bytesToRead);
+
+  fclose(file_handle);
+
+  printf("\n%d printable characters read.\n",printable);
+  printf("%d whitespace characters read.\n\n",whitespace);
   return 0;
 }
 

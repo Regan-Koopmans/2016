@@ -17,12 +17,12 @@ extern int shaper(struct Shape* mysteryShape);
 int main()
 {
 	struct Shape mysteryShape;
-	mysteryShape.id =0;
+	mysteryShape.id =2;
 	mysteryShape.area =0.0;
-	mysteryShape.A =3.0;
+	mysteryShape.A =0.0;
 	mysteryShape.B =3.0;
-	mysteryShape.C =2.0;
-	mysteryShape.D =2.0;
+	mysteryShape.C =5.0;
+	mysteryShape.D =4.0;
 	mysteryShape.radius =0.0;
 
 	shaper(&mysteryShape);
@@ -35,6 +35,5 @@ int main()
 	printf("Side C: %f\n",mysteryShape.C);
 	printf("Side D: %f\n",mysteryShape.D);
 	printf("Radius: %f\n",mysteryShape.radius);
-  printf("Size of this struct is %ld bytes\n",sizeof(mysteryShape));
   return 0;
 }
