@@ -1,0 +1,160 @@
+% Created 2016-10-09 Sun 09:51
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Regan}
+\date{\today}
+\title{Fundamental Concepts and ISA}
+\hypersetup{
+ pdfauthor={Regan},
+ pdftitle={Fundamental Concepts and ISA},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.1.1 (Org mode 8.3.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+
+\section{Why Study Computer Architecture?}
+\label{sec:orgheadline2}
+
+\begin{itemize}
+\item Learn about how computers work and how they are designed
+\item Creating computing systems that satify goals.
+\item How have these goals changed?
+\end{itemize}
+
+It is okay not to know something, you don't know most things.
+Read \textbf{Gordon Moore's} seminal paper.
+
+\subsection{Today is a critical time for computer architecture}
+\label{sec:orgheadline1}
+
+\textbf{20 years ago there was one architecture that most people agreed on.}
+
+This is not the case of today.
+
+There is a massive paradigm shift to multicorea processors, there
+is currently no optimal solutions. Dynamically reconfigurable 
+architecures.
+
+Out-order execution allow for massively parallized executions,
+accross multiple cores. "Paging" instructions. Power and energy
+has become increasingly more important (because of mobile devices).
+
+Smaller DRAM requires more frequent updates. Take advantage of user
+level perception and requirements. 
+
+Computation becomes faster, and this effectively makes the cost of 
+access to memory higher, since this speed generally stays constent.
+Memory is becoming a bigger cost.
+
+Not every problem is parallizable (or is it?). Implicit destinations.
+The structure of scientific revolutions. Pre-paradigm
+
+\section{Understanding Fundamentals}
+\label{sec:orgheadline7}
+
+"\emph{One can only change the world once one understands it.}"
+
+A computer system is fundamentally made of the following three
+components.
+
+\uline{Computation}
+
+How do we calculate things?
+
+\uline{Communication}
+
+How do subcomponents talk to one another and collaborate?
+
+\uline{Storage (memory)}
+
+How do we make short term and long term persistence happen?
+
+\subsection{The von Neumann Computer Architecture}
+\label{sec:orgheadline3}
+
+\begin{itemize}
+\item Stored program in memory
+\begin{itemize}
+\item Linear array in terms of memory.
+\item Interpretation of stored value depends on context in cycle.
+\end{itemize}
+
+\item Sequential instruction processing
+\begin{itemize}
+\item only one instruction is processed at a time, and you keep 
+going. "Instruction pointer".
+\end{itemize}
+\end{itemize}
+
+The instruction processing cycle.
+\begin{itemize}
+\item Fetch
+\item Decode
+\item Evaluate operands
+\item Fetch operands
+\item Execute
+\item Store (result)
+\end{itemize}
+
+\subsection{The Dataflow Model}
+\label{sec:orgheadline5}
+
+Instructions execute when operands are loaded, rather than when
+the program counter points to it. No program counter.
+
+Processor keeps track of dependencies. There is no sequential
+constraint, since dependencies may be one to many and many to
+one. Read more about this. Data flow graphs. Is a pull model.
+
+Are humans sequential? Von Neumann offers precise state.
+
+\subsubsection{Barrier Synchronization}
+\label{sec:orgheadline4}
+
+Different threads of control that we want to synchronise at
+some point.
+
+Say we have a book, we want to count the number of certain
+letters in the book. You can have a separate thread for each
+letter. Alternatively you can allocate a page to each thread.
+
+We want some \textbf{massive synchronization point}. The dataflow 
+model exposes more parallels, but very complex to design.
+The problem is maintaining states.
+
+\texttt{A preliminary architecture for a basic data-flow processor.}
+
+\subsection{ISA vs Microarchitecture}
+\label{sec:orgheadline6}
+
+A car has an interface to the driver.
+\begin{itemize}
+\item Pedal accelerates
+\item Wheel steers.
+\end{itemize}
+
+As drivers we do not know the difference between cars. Think
+of add instruction, versus the implementation of a full adder.
+Bit serial adders.
+
+We have tradeoffs even at the arithmetic level.
+\end{document}

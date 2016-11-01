@@ -1,0 +1,8 @@
+#+TITLE: An Exploration into Natural Language Processing
+#+AUTHOR: Regan Koopmans
+#+OPTIONS: toc:nil
+#+LATEX_CLASS: article
+
+* Introduction
+
+

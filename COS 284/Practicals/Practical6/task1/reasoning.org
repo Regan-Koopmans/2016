@@ -1,0 +1,46 @@
+#+startup: indent
+
+* allocateNode
+
+** Problem Description
+
+I have to define a function which takes a string as a parameter, and returns the
+address of a newly created Node structure. 
+
+** Strategies and Information
+
+I need to remember the tiny differences between C structs and assembly structs,
+I will need to find the specific boundaries of the values of the struct, the
+struct is defined in C as follows:
+
+#+BEGIN_SRC c
+struct Node
+{
+  char * id; // this is what will hold the name parameter
+  struct
+  {
+    
+  } * links;
+}
+#+END_SRC
+
+Using C I have determined that the struct is 40 bytes in size, now its simply a
+matter of finding out the padding 
+
+I think I should copy the string to the struct field, rather than copying
+pointers, because that array is only in the local scope, and I cannot guarantee
+that that particular memory will not be overwritten at some point in the future.
+
+** Issues Encountered
+
+* linkNodes
+
+** Problem Description
+
+I have to define a function that will link two nodes by updating both of their
+'links' arrays. Critically I have to do this *bidirectionally*, that means that
+a link from A->B implies a link from B->A.
+
+Either, I will have to perform a linear search so that I can find out whether a
+link already exists to that node (and then simply update the distance), or I can
+assume that parallel edges are allowed.

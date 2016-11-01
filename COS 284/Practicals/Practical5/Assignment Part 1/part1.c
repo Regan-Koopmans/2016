@@ -4,8 +4,8 @@ extern int border(char* source, char* dest);
 
 int main()
 {
-	char* source = "Science guy.bmp";
-	char* dest = "guyModified.bmp";
+	char* source = "flowers.bmp";
+	char* dest = "flowersModified.bmp";
 	border(source, dest);
 	//Should create borders around the image
 	return 0;

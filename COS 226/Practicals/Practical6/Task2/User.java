@@ -1,0 +1,6 @@
+public enum User
+{
+  DEPOSITOR,
+  ORDINARY_WITHDRAWER,
+  PREFERRED_WITHDRAWER
+}

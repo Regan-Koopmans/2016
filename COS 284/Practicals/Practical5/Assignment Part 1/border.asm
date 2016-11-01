@@ -27,10 +27,13 @@ col_max:                          dq    0
 row_max:                          dq    0
 pixel:                            dq    0
 pixel_size:                       dq    0
+start_pixel_array:                dq    1078
+
 
 file_mode_read:                   dq    "r"
 file_mode_write_or_create:        dq    "w+"
 black_pixel:                      db    0
+
 
   ;; Imported functions
 
@@ -116,7 +119,11 @@ border:
   mov   [col_max],bx
   mov   bx,[rax+22]
   mov   [row_max],bx
-  mov   bl,[rax+28]
+  mov   rbx,0
+  mov   rbx,[rax+10]
+  ;; add   rbx,14
+  mov   [start_pixel_array],rbx
+
 
   ;; Write loop (copies file verbatim)
 
@@ -126,9 +133,12 @@ while:
   mov   rbx,[source_addr]
   mov   cl,[rbx+rax]
 
+  mov   rbx,0
   mov   rax,[counter]
-  cmp   rax,54
-  jle   put_norm_no_inc
+  mov   bx,[start_pixel_array]
+
+  cmp   ax,bx
+  jl    put_norm_no_inc
 
   ;; First row in image
 
@@ -140,6 +150,7 @@ while:
 
   mov   rax,[row_counter]
   mov   rbx,[row_max]
+  dec   rbx
   cmp   rax,rbx
   je    put_black
 
@@ -150,11 +161,15 @@ while:
   cmp   rax,rbx
   je    put_black
 
+  mov   rax,[col_counter]
+  mov   rbx,[col_max]
+  dec   rbx
+  cmp   rax,rbx
+  je    put_black
+
   ;; Last pixel in row
 
   jmp   put_norm
-
-
 
 put_black:
   mov   rcx,[black_pixel]
@@ -172,9 +187,11 @@ put_norm:
   mov   rbx,[col_max]
   cmp   rax,rbx
   jl    continue
+
   mov   rax,0
   mov   [col_counter],rax
   inc   qword   [row_counter]
+
   jmp   continue
 
 put_norm_no_inc:

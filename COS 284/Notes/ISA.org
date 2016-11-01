@@ -1,0 +1,113 @@
+#+startup: indent
+#+title: Fundamental Concepts and ISA
+
+
+* Why Study Computer Architecture?
+
+- Learn about how computers work and how they are designed
+- Creating computing systems that satify goals.
+- How have these goals changed?
+
+It is okay not to know something, you don't know most things.
+Read *Gordon Moore's* seminal paper.
+
+** Today is a critical time for computer architecture
+
+*20 years ago there was one architecture that most people agreed on.*
+
+This is not the case of today.
+
+There is a massive paradigm shift to multicorea processors, there
+is currently no optComputer Architectureimal solutions. Dynamically reconfigurable 
+architecures.
+
+Out-order execution allow for massively parallized executions,
+accross multiple cores. "Paging" instructions. Power and energy
+has become increasingly more important (because of mobile devices).
+
+Smaller DRAM requires more frequent updates. Take advantage of user
+level perception and requirements. 
+
+Computation becomes faster, and this effectively makes the cost of 
+access to memory higher, since this speed generally stays constent.
+Memory is becoming a bigger cost.
+
+Not every problem is parallizable (or is it?). Implicit destinations.
+The structure of scientific revolutions. Pre-paradigm
+
+* Understanding Fundamentals
+
+"/One can only change the world once one understands it./"
+
+A computer system is fundamentally made of the following three
+components.
+
+_Computation_
+
+How do we calculate things?
+
+_Communication_
+
+How do subcomponents talk to one another and collaborate?
+
+_Storage (memory)_
+
+How do we make short term and long term persistence happen?
+
+** The von Neumann Computer Architecture
+
+- Stored program in memory
+  - Linear array in terms of memory.
+  - Interpretation of stored value depends on context in cycle.
+
+- Sequential instruction processing
+  - only one instruction is processed at a time, and you keep 
+    going. "Instruction pointer".
+
+The instruction processing cycle.
+- Fetch 
+- Decode
+- Evaluate operands
+- Fetch operands
+- Execute
+- Store (result)
+
+** The Dataflow Model
+
+Instructions execute when operands are loaded, rather than when
+the program counter points to it. No program counter.
+
+Processor keeps track of dependencies. There is no sequential
+constraint, since dependencies may be one to many and many to
+one. Read more about this. Data flow graphs. Is a pull model.
+
+Are humans sequential? Von Neumann offers precise state.
+
+*** Barrier Synchronization
+
+Different threads of control that we want to synchronise at
+some point.
+
+Say we have a book, we want to count the number of certain
+letters in the book. You can have a separate thread for each
+letter. Alternatively you can allocate a page to each thread.
+
+We want some *massive synchronization point*. The dataflow 
+model exposes more parallels, but very complex to design.
+The problem is maintaining states.
+
+~A preliminary architecture for a basic data-flow processor.~
+
+** ISA vs Microarchitecture
+
+A car has an interface to the driver.
+- Pedal accelerates
+- Wheel steers.
+
+As drivers we do not know the difference between cars. Think
+of add instruction, versus the implementation of a full adder.
+Bit serial adders.
+
+We have tradeoffs even at the arithmetic level. Microarchitecure
+is everything done in hardware without exposure to software.
+* 

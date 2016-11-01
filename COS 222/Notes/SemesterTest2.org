@@ -1,17 +1,16 @@
 #+STARTUP: indent
 #+TITLE: COS 222 - Semester Test 2 Notes
+#+AUTHOR: Regan Koopmans
 
 * Chapter 7 - Memory Management
 
 ** Memory Management Requirements
 
-A Frame is a fixed-length block of main memory
-
-A Page is a fixed-length block of data that resides in
+A *Frame* is a fixed-length block of main memory.
+A *Page* is a fixed-length block of data that resides in
 secondary memory (such as a disk). A page may temporarily
 be copied into a frame of main memory.
-
-A Segment is a variable-length block of data that resides
+A *Segment* is a variable-length block of data that resides
 in secondary memory. An entire segment may be temporary
 copied into an available region of main memory (this process
 is known as segmentation) or the segment may be divided into
@@ -21,7 +20,8 @@ pages which can individually be copied into main memory
 *** Relocation
 
 We need our system to be able to move the location where a
-process.
+process exists, particularly in the case where we might want
+to swap it for another process.
 
 *** Protection
 
@@ -51,14 +51,16 @@ and secondary memory
 
 The main memory available for a program plus its data may be
 insufficient. In that case, the programmer must engage in a
-practise known as overlaying.
-
+practise known as *overlaying*.
 
 ** Memory Partitioning
 
 *** Fixed Partitioning
 
-This is the idea that memory is split into certain sizes
+This is the idea that memory is split into certain unchanging sizes
+that may be allocated to a process. Fixed partitioning is almost
+unknown in modern times because of the inherent memory wastage and
+inflexibility it introduces into the system.
 
 **** Partition Sizes
 
@@ -66,16 +68,93 @@ Main memory utilization is extremely inefficient. Any program,
 no matter how small, occupies an entire partition. A program
 will be forced to occupy some partition that is larger than
 its maximum size. This is wasted space, and we call this waste
-*internal f
+*internal fragmentation*.
 
 **** Placement Algorithm
+
+With ~equal partition~ sizes the pacement of processes in memory
+is trivial. As long as there is any available partition, a process
+can be loaded into that partition. Since all partition sizes are
+equal, there is no benefit in choosing one free partition over
+another.
+
+With ~unequal partition~ sizes there are *two* possible ways to assign
+processes to partitions: 
+
+The simplest way is to assign the process to *the smallest partition* 
+*that fits*. In this case we will need a queue for each partition. The
+benefit of this is that we are minimizing internal fragmentation and
+
+therefore minimizing memory wastage. 
+
+Alternatively, we can use a single queue for all processes. A process
+will be allocated the next free block that is closest to its requiremens.
+If main memory can no longer support any new processes, then a swapping
+decision must take place, and this becomes more the job of the scheduler.
 
 *** Dynamic Partitioning
 
 With dynamic partitioning, the partitions are of variable 
-length and number.
+length and number. Dynamic partitioning suffers from external
+fragmentation, in which processes are scattered across main 
+mememory, with gaps inbetween, each of which too small to accomodate
+another processes. To overcome this we would need to perform
+*compaction*, which is similar to defragmentation on a harddrive.
 
-**** The Buddy System
+**** Placement Algorithm
+
+***** Best Fit
+
+This algorithm chooses the block that is closes to that of
+the request.
+
+***** First Fit
+
+This algorithm chooses the block that first satisfies the
+space requirement
+
+***** Next-fit
+
+This algorithm chooses the second available block for the
+memory.
+
+**** Replacement Algorithm
+
+~These are discussed in virtual memory~
+
+*** The Buddy System
+
+Both fixed and dynamic partitioning schemes have their drawbacks.
+A fixed partitioning scheme limits the number of active processes
+and may use space inefficiently.A dynamic partitioning scheme bears
+the overhead of compaction.
+
+In a buddy system, the main memory is always broken into chunks of
+the power off 2. The main memory will be halved until halving it
+would make it too small for the process. When enough processes have
+finished the system may be able to merge these partitions back 
+together.
+
+[        512       ]
+[   256  ][   256  ]
+[128][128][   256  ]
+
+*** Relocation
+
+A *logical address* is a reference to a memory address that is independent
+of the current assignment of data to memory, and therefore a translation is
+requred if we want to use the reall addresses these point to.
+
+*Relative Addresses* are addresses that express locations in memory in
+terms of a base address and an offset. This base address may be the
+start of a segment or really any arbitrary label.
+
+*Physical Addresses* are absolute addresses within main memory.
+
+If the process control block maintains a single base pointer then all 
+addresses can be relative to this pointer. This base pointer can be modified,
+and in this way a process can maintain all of its logical addresses, while
+simulaniously swapping in and out of different locations in memory.
 
 ** Paging
 
@@ -98,32 +177,137 @@ of *segments*. It is not required that all segments of all
 programs be of the same length, although there is a maximum 
 segment length.
 
-The difference between segmentation and paging is that
+The difference between segmentation and paging is that:
 
 | Paging                    | Segmentation            |
 |---------------------------+-------------------------|
 | Transparent to programmer | Involves the programmer |
-| No seperate protection    |                         |
+| No seperate protection    | Offers protetion        |
 | No seperate compiling     |                         |
-| No shared code.           |                         | 
+| No shared code.           | Shared program          | 
 
+** Loading And Linking
 
+*** Loading
 
-* Chapter 8 - Virtual Memory
+Loading is essentially bringing a process into main memory such
+that is can run.
+
+**** Absolute Loading
+
+An absolute loade requires that a given load module always be 
+loaded into the same locations in main memory. Thus, in the load 
+module presented to the loader, all adress references must be to 
+specific, or "absolute", main memory addresses.
+
+**** Relocatable Loading
+
+The disadvantage of binding memory references to specific 
+addresses prior to loading is that the resulting load moddule 
+can only be placed in one region of main memory. However, when
+many programs share main memory, it may not be desirable to 
+decide ahead of time into which region of memory a particular
+module should be loaded. It is better to make that decision 
+at load time.
+
+**** Dynamic Run-time Loading
+
+Relocatable loaders are common and provide obvious benefits relative 
+to absolute loaders. However, in a multiproramming environment, 
+even one that does not depend on virtual memory, the relocatable
+loading scheme is inadequate.    
+
+*** Linking
+
+The function of a linker is to take as input a collection of 
+object modules and produce a load module, consisting of an 
+integrated set of prgram and data modules, to pass to the loader. 
+
+**** Linkage Editor
+
+The nature of thos address linkage will depend on the type of module 
+to be created and when the linkage occurs. If, as is usually the case, 
+a relocatable load module is desired, 
+
+**** Dynamic Linker
+
+As with loading, is is possible to defer some linkage functions. 
+The term *dynamic linking* is used to refer to the practise of deferring 
+the linkage of some external modules until after
+
+For *load-time dynamic linking* the following step occur:
+
+1. 
+
+   
+* Chapter 8 - Virtual Memory 
 
 ** Hardware Control Structures
 
 *** Locality and Virtual Memory
 
+
+
 *** Paging
+
+**** Page Table Structure
+
+The basic mechanism for reading a word from memory involves the translation
+of a virtual, or logicall, address, consisting of page number and offset, 
+into a physical address, consisting of frame number and offset, using a page 
+table.
+
+**** Inverted Page Table
+
+A drawback of the type of page tables we have been discussing is that their
+size is proportional to that of the virtual address space. An alternative
+approach to the use of one or multiple-level page tables is the use of an
+inverted page table.
+
+The inverted page table (IPT) is best thought of as an off-chip extension 
+of the TLB, which uses normal system RAM. Unlike the true page table, it 
+is not necessarily able to hold all current mappings.
+
+The inverted page table allows processes to potentially share pages. In an
+inverted page table, we must keep track of the following information:
+
+- Page number
+- Process identifier
+- Control bits (protection/locking/validity flags)
+- Chain pointer
+
 
 *** Segmentation
 
+**** Virtual Memory Implications
+
+Segmentation allows the programmer to view memory as consisting of multiple
+address spaces or 'segments'. Segments may be of unequal, indeed dynamic, size.
+Memory references consist of a (segment number, offset) for of address.
+
 *** Combined Paging and Segmentation
+
+Both paging and segmentation have their strengths. Paging, 
+which is transparent to the programmer, eliminates external 
+fragmentation and thus provides efficient use of memory. Segmentation,
+which is visible to the porgrammer has the benefit of maintaining
+growing data structures, modularity and support for sharing and 
+protection.
 
 *** Protection and Sharing
 
+Segmentation lends itself to the implementation of protection and sharing 
+poolicies. Because each segment table entry includes a length  as well as 
+a base address, a program cannot inadvertently access a main memory location beyond the limits of its segment. 
+
 ** Operating System Software
+
+The design of the memory management portion of an OS depends on three
+fundamental areas of choice:
+
+- Whether or not to use virtual memory techniques
+- The use of paging, segmentation or both.
+- The algorithms employed for various aspects of memory management.
 
 *** Fetch Policy
 
@@ -145,13 +329,23 @@ amount of its neighbours.
 
 *** Placement Policy
 
-
+The placement policy determines where in real memory a porcess piece 
+is to reside. In a pure segmentation system, the placement policy is 
+an important design issue. 
 
 *** Replacement Policy
 
 When the memory we have available to load pages becomes full,
 we need certain heuristics that allow us to logically replace
 and evict certain pages.
+
+**** Frame Locking
+
+One restriction on replacement policy needs to be mentioned
+before looking at algorithms. Some of the frames in main memory
+may be *locked*. Essential frames such as those that the kernel
+resides in, or I/O buffers, are locked and hence cannot be
+replaced.
 
 **** Basic Algorithms
 
@@ -173,7 +367,7 @@ pages to newer ones.
 
 ***** Clock
 
-
+This replacement policy is a circular list
 
 **** Page Buffering
 
@@ -183,13 +377,34 @@ that of page buffering.
 
 *** Resident Set Management
 
+The resident set of a process is the pages of that process that currently
+reside in main memory.
 
+**** Resident Set Size
+
+The smaller the memory allocated to each process is, the more processes
+can reside in main memory, and hence it is more likely that the operating
+system can find a process that is ready to run.
+
+**** Replacement Scope
+
+The scope of a replacement strategy can be 
+
+***** Local Replacement Strategy
+
+****** Fixed Allocation
+
+****** Variable Allocation
+
+***** Global Replacement Strategy
+
+****** Variable Allocation
 
 *** Cleaning Policy
 
 These are the policies used to decide which pages should be removed
 from main memory. These poilicies mirror/complement the fetching
-policies. Cleaning policies are important
+policies. Cleaning policies are important.
 
 **** Demand
 
@@ -203,13 +418,106 @@ that pages can be expelled from main memory in batches.
 
 *** Load Control
 
+Load control is concerned with determining the number of processes 
+that will be resident in main memory, which has been referred to as 
+the *multiprogramming level*.
+
+**** Multiprogramming Level
+
+As the multiprogramming level increases, so does thrashing, and at some
+critical point we achieve *livelock*, where processes spend their entire
+processing time, or large portions of it, swapping into and out of main
+memory.
+
+**** Process Suspension
+
+If the degree of multiprogramming is to be reduced, we need some heuristics
+to systematically suspend certain processes. Here are a few measures to consider:
+
+***** Lowest-priority process
+
+***** Fauling process
+
+***** Last process activated
+
+***** Process with the smallest resident set
+
+***** Largest process 
+
+***** Process with largest remaining execution window
+
 ** Unix and Solaris Memory Management
+
+*** Paging System
+
+**** Data Structures
+
+- Page table
+- Disk block descriptor
+- Page frame data table
+- Swap-use table
+
+**** Page Replacement
+
+The page frame data table (as mentioned in the section above), is used for page replacement.
+Several pointers are used to create lists within this table. All of the available frames are
+linked together in a list of free frames available for bringing in pages. Unix and Solaris
+basically use a two-handed clock replacement algorithm.
+
+*** Kernel Memory Allocator
 
 ** Linux Memory Management
 
+*** Linux Virtual Memory
+
 ** Windows Memory Management
 
+*** Windows Virtual Address Map
+
+On 32-bit platforms, each Windows use process sees a separate 32-bit address space, allowing
+4 Gigabytes of virtual memory per process. By default, half of this memory is reserved for the
+OS, so each user has 2 Gigabytes of available virtual address. If processes are in kernel mode
+they all share the same virtual address space.
+
+*** Windows Paging
+
+When a  process is created, it can in princible make use of the entire user space of almost
+2 gigabytes (8 TB on 64 bit systems). The space is divided into fixed-size pages, any of which
+can be brought into memory. The memory manager manages 64 KB regions at a time, which have one
+of the following three states:
+
+- Available - not currently used by the process
+- Reserved
+- Committed
+
+*** Windows 8 Swapping
+
+With the Metro UI comes a new virtual memory system to handle the interrupt requests from
+Windows Stores Apps. Swapfile.sys joins its familiar Windows counterpart pagefile.sys to
+provide access to temporry memory storage on the hard drive.
+
 ** Android Memory Management
+
+Android include s a number of extensions to the normal Linux kernel memory management facility
+
+*** ASHMem
+
+This feature provides anonymous shared memory, which abstracts memory
+as file descriptors. This file descriptor can then be parsed to another
+process to use.
+
+*** Pmem
+
+This feature allocates virtual memory so that is it contiguous in memory.
+This is especially useful for devices that do not explicitely support
+virtual memory.
+
+*** Low Memory Killer (...wat)
+
+Most mobile devices do not have swap capabilities. This memory feature allows
+the Android operating system to warn apps to lower their memory usage. If an
+app is unable to, or does not comply, it is terminated.
+
 
 * Chpater 9 - Uniprocessor Scheduling
 
@@ -218,7 +526,7 @@ that pages can be expelled from main memory in batches.
 *** Long-Term Scheduling
 
 The long-term scheduler determines which programs are
-admitted.
+admitted into main memory.
 
 *** Medium-Term Scheduling
 
@@ -235,13 +543,38 @@ what process should be executed next by the processor.
 
 *** Short-Term Scheduling Criteria
 
+The main objective of short-term scheduling is to allocate procesor time in such a
+way as to optimize one or more aspects of system behaviour. System of course behave
+very differently when made to be user-oriented rather than system oriented.
 
+**** User Oriented, Performance Related
+
+- Turnaround time
+- Response time
+- Deadline
+
+**** User Oriented, Other
+
+- Predictability ⇒ determinism
+
+**** System Oriented, Performance Related
+
+- Throughput
+- Processor Utilization
+
+**** System Oriented, Other
+
+- Fairness
+- Enforcing priorities
+- Balancing sources
 
 *** The Use of Priorities
 
-
+In many systems, each process is assigned a priority and the scheduler
+will always choose a process of higher priority over one with lower priority.
 
 *** Alternative Scheduling Policies
+
 
 
 
@@ -251,9 +584,8 @@ what process should be executed next by the processor.
 
 *** Fair-Share Scheduling
 
-
-
 ** Traditional UNIX Scheduling
+
 
 * Chapter 10 - Multiprocessor Scheduling
 
@@ -267,7 +599,13 @@ We can classify multiprocessor systems as follows
 
 *** Granularity
 
-||
+| Grain Size  | Description                                                  | Synchronization Interval (Inst) |
+|-------------+--------------------------------------------------------------+---------------------------------|
+| Fine        | Parallelism inherent in single execution stream              | < 20                            |
+| Medium      | Parallelism processing or multitasking in single application | 20 - 200                        |
+| Coarse      | Distributed of concurrent processes in multiprogramming env  | 200 - 2000                      |
+| Very Coarse | Distributed processing across network nodes                  | 2000 - 1 million                |
+| Independent | Multiple unrelated processes                                 | Not applicable                  |
 
 *** Design Issues
 
@@ -291,10 +629,31 @@ all feeding to a common pool of porcessors
 
 There are four main approaches to scheduling threads, namely:
 
-- Load Scheduling
-- Gang Sheduling
-- Dedicated Processor Assignment
-- Dynamic Scheduling
+**** Load Scheduling
+
+Processes are not assigned to a particular processor. A global queue of
+ready threads is maintained, and each processor, when idle, selects a
+thread from the queue. Some Load Scheduling algorithms include:
+
+***** FCFS
+
+***** Smallest number of threads first
+
+***** Preemptive smallest number of threads first
+
+**** Gang Sheduling
+
+A set of related threads is scheduled to run on a set of processors at
+the same time, on a one-to-one basis.
+
+**** Dedicated Processor Assignment
+
+
+
+**** Dynamic Scheduling
+
+The number of threads in a proess can be altered during the course
+of execution.
 
 *** Multicore Thread Scheduling
 
@@ -305,7 +664,14 @@ otherwise it may cause unacceptable or fatal damage to the systems'
 function. An example of such a task is creating s Process Control
 Block for some essential process.
 
-A *soft real-time task*
+A *soft real-time task* is one in which we would like to complete
+in time, but we do not expect the entire system to fail if we miss
+the deadline slightly.
+
+Another important concept for real time scheduling is that of 
+*periodic* and *aperiodic* tasks. These will affect our decisions, 
+as we will want to keep pages related to periodic tasks in main memory as much as
+possible.
 
 *** Characteristics of A Real Time Operating System
 
@@ -320,9 +686,14 @@ in the floowing general areas
 
 *** Real-Time Scheduling
 
-**** Real-Time Scheduling
+These are the classes of real time scheduling algorithms:
 
-**** Deadline Scheduling
+- Static table-driven approaches
+- Static priority-driven preemptive approaches
+- Dynamic planning-based approaches
+- Dynamic best effort approaches
+
+*** Deadline Scheduling
 
 Most contemporary real-time operating systems are designed with
 the objective of starting real-time tasks as rapidly as possible,
@@ -330,15 +701,13 @@ and hence emphasize rapid interrupt handling and task dispatching.
 
 Extra information includes:
 
-- Ready Time
-- Starting Deadline
-- Completion Deadline
-- Processing Time
-- Resource Requirements
-- Priority
-- Subtask Structure
-
-*** Deadline Scheduling
+- *Ready Time*
+- *Starting Deadline*
+- *Completion Deadline*
+- *Processing Time*
+- *Resource Requirements*
+- *Priority*
+- *Subtask Structure*
 
 *** Rate Monotic Scheduling
 
@@ -356,10 +725,20 @@ forced to wait for a lower priority process. This occurs because
 the lower priority process is holding some resource that the higher
 priority process requires. 
 
+In practical terms, two alternative approaches are used to avoid 
+unbounded priority inversion: *Priority inheritence* and *Priority*
+*ceiling protocol*.
+
 ** Linux Scheduling
 
 *** Real-Time Scheduling
 
+
+The three linux scheduling classes are as follows:
+
+- SCHED_FIFO
+- SCHED_RR (round robin)
+- SCHED_OTHER 
 
 *** Non-Real-Time Scheduling
 
@@ -368,6 +747,8 @@ priority process requires.
 ** Unix FreeBSD Scheduling
 
 *** Priority Classes
+
+
 
 *** SMP and Multicore Support
 

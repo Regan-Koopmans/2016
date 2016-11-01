@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>COS 222 - Semester Test 2 Notes</title>
+<!-- 2016-10-10 Mon 08:37 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Org-mode">
+<meta name="author" content="Regan">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 18px;
+    margin-bottom: 105px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#table-of-contents {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 18px;
+}
+
+pre {
+    font-size: 16px;
+}
+
+.footpara {
+    display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Nav: third level (shown on .active) */
+.bs-docs-sidebar .nav .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 40px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav .nav > li > a:focus {
+    padding-left: 39px;
+}
+.bs-docs-sidebar .nav .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
+    padding-left: 38px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 20px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix();
+});
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title">COS 222 - Semester Test 2 Notes</h1>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Chapter 7 - Memory Management</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Memory Management Requirements</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+A Frame is a fixed-length block of main memory
+</p>
+
+<p>
+A Page is a fixed-length block of data that resides in
+secondary memory (such as a disk). A page may temporarily
+be copied into a frame of main memory.
+</p>
+
+<p>
+A Segment is a variable-length block of data that resides
+in secondary memory. An entire segment may be temporary
+copied into an available region of main memory (this process
+is known as segmentation) or the segment may be divided into
+pages which can individually be copied into main memory
+(combined segmentation and paging).
+</p>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Relocation</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+We need our system to be able to move the location where a
+process.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Protection</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Each process should protected against unwanted interference
+by other processes, whether accidental or intentional. Thus
+programs in other processes should not be able to reference
+memory loctions in a process for reading or writing without
+sufficient permission.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> Sharing</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+In order to minimize redundancy, we would ideally like 
+processes to be able to share blocks of memory, otherwise
+there will be numerous instances where this data would have
+to be duplicated.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> Logical Organization</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+The main memory of a computer system is most likely to be
+arranged as a linear, or one-dimensional, address space of
+either bytes or words.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5"><span class="section-number-4">1.1.5</span> Physical Organization</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+Memory is organised in at least two levels, namely primary
+and secondary memory
+</p>
+
+<p>
+The main memory available for a program plus its data may be
+insufficient. In that case, the programmer must engage in a
+practise known as overlaying.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Memory Partitioning</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> Fixed Partitioning</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+This is the idea that memory is split into certain sizes
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-1-2-1-1" name="sec-1-2-1-1"></a>Partition Sizes<br ><div class="outline-text-5" id="text-1-2-1-1">
+<p>
+Main memory utilization is extremely inefficient. Any program, 
+no matter how small, occupies an entire partition. A program
+will be forced to occupy some partition that is larger than
+its maximum size. This is wasted space, and we call this waste
+*internal f
+</p>
+</div>
+</li>
+
+<li><a id="sec-1-2-1-2" name="sec-1-2-1-2"></a>Placement Algorithm<br ></li></ol>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> Dynamic Partitioning</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+With dynamic partitioning, the partitions are of variable 
+length and number.
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-1-2-2-1" name="sec-1-2-2-1"></a>The Buddy System<br ></li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Paging</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Both unequal fixed-size and variable-size partitions are 
+inefficient in the use of memory; the former results in
+<b>internal fragmentation</b> and the latter in <b>external</b>
+<b>fragmentation</b>. 
+</p>
+
+<p>
+Suppose, however, that memory is partitioned into equal 
+fixed-size chunks that are relatively small, and that 
+each process is also divided into small fixed-sized chunks 
+of the same size. The chunks of the process are known as
+<b>pages</b>, which can be assigned into chunks of memory, <b>frames</b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Segmentation</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+A user program can be subdivided using segmentation, in which
+the program and its associated data are divided into a number
+of <b>segments</b>. It is not required that all segments of all 
+programs be of the same length, although there is a maximum 
+segment length.
+</p>
+
+<p>
+The difference between segmentation and paging is that
+</p>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="text-left">Paging</th>
+<th scope="col" class="text-left">Segmentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="text-left">Transparent to programmer</td>
+<td class="text-left">Involves the programmer</td>
+</tr>
+
+<tr>
+<td class="text-left">No seperate protection</td>
+<td class="text-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="text-left">No seperate compiling</td>
+<td class="text-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="text-left">No shared code.</td>
+<td class="text-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Chapter 8 - Virtual Memory</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Hardware Control Structures</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Locality and Virtual Memory</h4>
+</div>
+
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Paging</h4>
+</div>
+
+<div id="outline-container-sec-2-1-3" class="outline-4">
+<h4 id="sec-2-1-3"><span class="section-number-4">2.1.3</span> Segmentation</h4>
+</div>
+
+<div id="outline-container-sec-2-1-4" class="outline-4">
+<h4 id="sec-2-1-4"><span class="section-number-4">2.1.4</span> Combined Paging and Segmentation</h4>
+</div>
+
+<div id="outline-container-sec-2-1-5" class="outline-4">
+<h4 id="sec-2-1-5"><span class="section-number-4">2.1.5</span> Protection and Sharing</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Operating System Software</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Fetch Policy</h4>
+<div class="outline-text-4" id="text-2-2-1">
+</div><ol class="org-ol"><li><a id="sec-2-2-1-1" name="sec-2-2-1-1"></a>Demand Paging<br ><div class="outline-text-5" id="text-2-2-1-1">
+<p>
+This is the more simple of the two fetching policies.
+Pages are brought into memory when they are requested,
+which effectively means that a page fault occurs. This
+means that at the beginning of the systems' run-time,
+page faults will be numerous, but will decrease as the
+popular pages get proceedurally added to main memory.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-2-1-2" name="sec-2-2-1-2"></a>Prepaging<br ><div class="outline-text-5" id="text-2-2-1-2">
+<p>
+This policy attempts to predict the realistic future page
+use, usually by means of the <b>Principle of Locality</b>. Rather
+than simply retrieving one page, it retrieves a certain
+amount of its neighbours.
+</p>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> Placement Policy</h4>
+</div>
+
+
+
+<div id="outline-container-sec-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> Replacement Policy</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+When the memory we have available to load pages becomes full,
+we need certain heuristics that allow us to logically replace
+and evict certain pages.
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-2-2-3-1" name="sec-2-2-3-1"></a>Basic Algorithms<br ><ol class="org-ol"><li><a id="sec-2-2-3-1-1" name="sec-2-2-3-1-1"></a>Optimal<br ><div class="outline-text-6" id="text-2-2-3-1-1">
+<p>
+The optimal replacement policy is a theoretical concept
+that could only be implemented with perfect information
+about the past, present and future of the system.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-2-3-1-2" name="sec-2-2-3-1-2"></a>Least Recently Used (LRU)<br ><div class="outline-text-6" id="text-2-2-3-1-2">
+<p>
+In this replacement policy (which happens to be one of the
+most popular).
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-2-3-1-3" name="sec-2-2-3-1-3"></a>First-in-First-Out (FIFO)<br ><div class="outline-text-6" id="text-2-2-3-1-3">
+<p>
+This replacement policy will pereferencially remove older
+pages to newer ones.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-2-3-1-4" name="sec-2-2-3-1-4"></a>Clock<br ></li></ol>
+</li>
+
+
+
+<li><a id="sec-2-2-3-2" name="sec-2-2-3-2"></a>Page Buffering<br ><div class="outline-text-5" id="text-2-2-3-2">
+<p>
+An interesting strategy that can improve paging performance
+and allow the use of a simpler paging replacement policy is
+that of page buffering.
+</p>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-2-2-4" class="outline-4">
+<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> Resident Set Management</h4>
+</div>
+
+
+
+<div id="outline-container-sec-2-2-5" class="outline-4">
+<h4 id="sec-2-2-5"><span class="section-number-4">2.2.5</span> Cleaning Policy</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+These are the policies used to decide which pages should be removed
+from main memory. These poilicies mirror/complement the fetching
+policies. Cleaning policies are important
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-2-2-5-1" name="sec-2-2-5-1"></a>Demand<br ><div class="outline-text-5" id="text-2-2-5-1">
+<p>
+With demand cleaning, a page is written out to secondary memory
+only when it has been selected for replacement.
+</p>
+</div>
+</li>
+
+<li><a id="sec-2-2-5-2" name="sec-2-2-5-2"></a>Precleaning<br ><div class="outline-text-5" id="text-2-2-5-2">
+<p>
+The precleaning policy will write to seconday memory early such
+that pages can be expelled from main memory in batches.
+</p>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-2-2-6" class="outline-4">
+<h4 id="sec-2-2-6"><span class="section-number-4">2.2.6</span> Load Control</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Unix and Solaris Memory Management</h3>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Linux Memory Management</h3>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> Windows Memory Management</h3>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> Android Memory Management</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Chpater 9 - Uniprocessor Scheduling</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Types of Scheduling</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Long-Term Scheduling</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+The long-term scheduler determines which programs are
+admitted.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> Medium-Term Scheduling</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+Medium-term sheculing is part of the swapping function. This scheduling
+is the decision of what processes should be partiallly or fully in main
+memory.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3"><span class="section-number-4">3.1.3</span> Short-Term Scheduling</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+Also known as the <b>dispatcher</b>, short-term scheduling involves deciding
+what process should be executed next by the processor.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Scheduling Algorithms</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Short-Term Scheduling Criteria</h4>
+</div>
+
+
+
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> The Use of Priorities</h4>
+</div>
+
+
+
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3"><span class="section-number-4">3.2.3</span> Alternative Scheduling Policies</h4>
+</div>
+
+
+
+<div id="outline-container-sec-3-2-4" class="outline-4">
+<h4 id="sec-3-2-4"><span class="section-number-4">3.2.4</span> Performance Comparison</h4>
+</div>
+
+
+
+<div id="outline-container-sec-3-2-5" class="outline-4">
+<h4 id="sec-3-2-5"><span class="section-number-4">3.2.5</span> Fair-Share Scheduling</h4>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Traditional UNIX Scheduling</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Chapter 10 - Multiprocessor Scheduling</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Multiprocessor and Multicore Scheduling</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+We can classify multiprocessor systems as follows
+</p>
+
+<ul class="org-ul">
+<li>Loosely coupled
+</li>
+<li>Functionally specialized
+</li>
+<li>Tightly coupled multiprocessor
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Granularity</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="text-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Design Issues</h4>
+<div class="outline-text-4" id="text-4-1-2">
+</div><ol class="org-ol"><li><a id="sec-4-1-2-1" name="sec-4-1-2-1"></a>The Assignment of Processes to Processors<br ><div class="outline-text-5" id="text-4-1-2-1">
+<p>
+If a process is permanently assigned to one processor from
+its activation to completion
+</p>
+</div>
+</li>
+
+<li><a id="sec-4-1-2-2" name="sec-4-1-2-2"></a>THe use of multiprogramming on individual processors<br ></li>
+
+<li><a id="sec-4-1-2-3" name="sec-4-1-2-3"></a>Actual Dispatching of processes.<br ></li></ol>
+</div>
+
+<div id="outline-container-sec-4-1-3" class="outline-4">
+<h4 id="sec-4-1-3"><span class="section-number-4">4.1.3</span> Process Scheduling</h4>
+<div class="outline-text-4" id="text-4-1-3">
+<p>
+In most traditional multiprocessor systems, processes are not dedicated
+to processors. Rather, there is a single queue for all processors, or if
+some sort of priority scheme used, multiple queues representing priority,
+all feeding to a common pool of porcessors
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-4" class="outline-4">
+<h4 id="sec-4-1-4"><span class="section-number-4">4.1.4</span> Thread Scheduling</h4>
+<div class="outline-text-4" id="text-4-1-4">
+<p>
+There are four main approaches to scheduling threads, namely:
+</p>
+
+<ul class="org-ul">
+<li>Load Scheduling
+</li>
+<li>Gang Sheduling
+</li>
+<li>Dedicated Processor Assignment
+</li>
+<li>Dynamic Scheduling
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1-5" class="outline-4">
+<h4 id="sec-4-1-5"><span class="section-number-4">4.1.5</span> Multicore Thread Scheduling</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Real-Time Scheduling</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+A <b>hard real-time task</b> is one that must be met by the deadline,
+otherwise it may cause unacceptable or fatal damage to the systems'
+function. An example of such a task is creating s Process Control
+Block for some essential process.
+</p>
+
+<p>
+A <b>soft real-time task</b>
+</p>
+</div>
+
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Characteristics of A Real Time Operating System</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+Real time operating systems have unique requirements 
+in the floowing general areas
+</p>
+
+<ul class="org-ul">
+<li><b>Determinism</b>
+</li>
+<li><b>Responsiveness</b>
+</li>
+<li><b>User control</b>
+</li>
+<li><b>Reliability</b>
+</li>
+<li><b>Fail-soft operation</b> 
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Real-Time Scheduling</h4>
+<div class="outline-text-4" id="text-4-2-2">
+</div><ol class="org-ol"><li><a id="sec-4-2-2-1" name="sec-4-2-2-1"></a>Real-Time Scheduling<br ></li>
+
+<li><a id="sec-4-2-2-2" name="sec-4-2-2-2"></a>Deadline Scheduling<br ><div class="outline-text-5" id="text-4-2-2-2">
+<p>
+Most contemporary real-time operating systems are designed with
+the objective of starting real-time tasks as rapidly as possible,
+and hence emphasize rapid interrupt handling and task dispatching.
+</p>
+
+<p>
+Extra information includes:
+</p>
+
+<ul class="org-ul">
+<li>Ready Time
+</li>
+<li>Starting Deadline
+</li>
+<li>Completion Deadline
+</li>
+<li>Processing Time
+</li>
+<li>Resource Requirements
+</li>
+<li>Priority
+</li>
+<li>Subtask Structure
+</li>
+</ul>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-4-2-3" class="outline-4">
+<h4 id="sec-4-2-3"><span class="section-number-4">4.2.3</span> Deadline Scheduling</h4>
+</div>
+
+<div id="outline-container-sec-4-2-4" class="outline-4">
+<h4 id="sec-4-2-4"><span class="section-number-4">4.2.4</span> Rate Monotic Scheduling</h4>
+<div class="outline-text-4" id="text-4-2-4">
+<p>
+Rate monotic scheduling is a scheduling algorithm used in real
+-time scheduling systems, using a static priority scheme. Priority
+is based on cycle duration of the job, and therefore shorter cylces
+implies higher priority. Rate monotic analysis is used in 
+conjunction with these systems to provide scheduling guarantees for
+a particular application.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-5" class="outline-4">
+<h4 id="sec-4-2-5"><span class="section-number-4">4.2.5</span> Priority Inversion</h4>
+<div class="outline-text-4" id="text-4-2-5">
+<p>
+Priority inversion is the event where a high priority process is
+forced to wait for a lower priority process. This occurs because
+the lower priority process is holding some resource that the higher
+priority process requires. 
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Linux Scheduling</h3>
+<div class="outline-text-3" id="text-4-3">
+</div><div id="outline-container-sec-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Real-Time Scheduling</h4>
+</div>
+
+
+<div id="outline-container-sec-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> Non-Real-Time Scheduling</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> UNIX SVR4 Scheduling</h3>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> Unix FreeBSD Scheduling</h3>
+<div class="outline-text-3" id="text-4-5">
+</div><div id="outline-container-sec-4-5-1" class="outline-4">
+<h4 id="sec-4-5-1"><span class="section-number-4">4.5.1</span> Priority Classes</h4>
+</div>
+
+<div id="outline-container-sec-4-5-2" class="outline-4">
+<h4 id="sec-4-5-2"><span class="section-number-4">4.5.2</span> SMP and Multicore Support</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6"><span class="section-number-3">4.6</span> Windows Scheduling</h3>
+<div class="outline-text-3" id="text-4-6">
+</div><div id="outline-container-sec-4-6-1" class="outline-4">
+<h4 id="sec-4-6-1"><span class="section-number-4">4.6.1</span> Process and Thread Priorities</h4>
+</div>
+
+<div id="outline-container-sec-4-6-2" class="outline-4">
+<h4 id="sec-4-6-2"><span class="section-number-4">4.6.2</span> Multiprocessor Schduling</h4>
+</div>
+</div>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">1. Chapter 7 - Memory Management</a>
+<ul class="nav">
+<li><a href="#sec-1-1">1.1. Memory Management Requirements</a></li>
+<li><a href="#sec-1-2">1.2. Memory Partitioning</a></li>
+<li><a href="#sec-1-3">1.3. Paging</a></li>
+<li><a href="#sec-1-4">1.4. Segmentation</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Chapter 8 - Virtual Memory</a>
+<ul class="nav">
+<li><a href="#sec-2-1">2.1. Hardware Control Structures</a></li>
+<li><a href="#sec-2-2">2.2. Operating System Software</a></li>
+<li><a href="#sec-2-3">2.3. Unix and Solaris Memory Management</a></li>
+<li><a href="#sec-2-4">2.4. Linux Memory Management</a></li>
+<li><a href="#sec-2-5">2.5. Windows Memory Management</a></li>
+<li><a href="#sec-2-6">2.6. Android Memory Management</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Chpater 9 - Uniprocessor Scheduling</a>
+<ul class="nav">
+<li><a href="#sec-3-1">3.1. Types of Scheduling</a></li>
+<li><a href="#sec-3-2">3.2. Scheduling Algorithms</a></li>
+<li><a href="#sec-3-3">3.3. Traditional UNIX Scheduling</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Chapter 10 - Multiprocessor Scheduling</a>
+<ul class="nav">
+<li><a href="#sec-4-1">4.1. Multiprocessor and Multicore Scheduling</a></li>
+<li><a href="#sec-4-2">4.2. Real-Time Scheduling</a></li>
+<li><a href="#sec-4-3">4.3. Linux Scheduling</a></li>
+<li><a href="#sec-4-4">4.4. UNIX SVR4 Scheduling</a></li>
+<li><a href="#sec-4-5">4.5. Unix FreeBSD Scheduling</a></li>
+<li><a href="#sec-4-6">4.6. Windows Scheduling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="author">Author: Regan</p>
+<p class="date">Created: 2016-10-10 Mon 08:37</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.6)</p>
+</div>
+</footer>
+</body>
+</html>

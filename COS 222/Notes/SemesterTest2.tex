@@ -1,28 +1,29 @@
-% Created 2016-09-22 Thu 09:49
+% Created 2016-10-22 Sat 13:16
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
 \usepackage{graphicx}
+\usepackage{grffile}
 \usepackage{longtable}
-\usepackage{float}
 \usepackage{wrapfig}
 \usepackage{rotating}
 \usepackage[normalem]{ulem}
 \usepackage{amsmath}
 \usepackage{textcomp}
-\usepackage{marvosym}
-\usepackage{wasysym}
 \usepackage{amssymb}
+\usepackage{capt-of}
 \usepackage{hyperref}
-\tolerance=1000
-\author{regan}
+\author{Regan Koopmans}
 \date{\today}
 \title{COS 222 - Semester Test 2 Notes}
 \hypersetup{
-  pdfkeywords={},
-  pdfsubject={},
-  pdfcreator={Emacs 24.5.1 (Org mode 8.2.10)}}
+ pdfauthor={Regan Koopmans},
+ pdftitle={COS 222 - Semester Test 2 Notes},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.1.1 (Org mode 8.3.6)}, 
+ pdflang={English}}
 \begin{document}
 
 \maketitle
@@ -30,18 +31,16 @@
 
 
 \section{Chapter 7 - Memory Management}
-\label{sec-1}
+\label{sec:orgheadline29}
 
 \subsection{Memory Management Requirements}
-\label{sec-1-1}
+\label{sec:orgheadline6}
 
-A Frame is a fixed-length block of main memory
-
-A Page is a fixed-length block of data that resides in
+A \textbf{Frame} is a fixed-length block of main memory.
+A \textbf{Page} is a fixed-length block of data that resides in
 secondary memory (such as a disk). A page may temporarily
 be copied into a frame of main memory.
-
-A Segment is a variable-length block of data that resides
+A \textbf{Segment} is a variable-length block of data that resides
 in secondary memory. An entire segment may be temporary
 copied into an available region of main memory (this process
 is known as segmentation) or the segment may be divided into
@@ -49,13 +48,14 @@ pages which can individually be copied into main memory
 (combined segmentation and paging).
 
 \subsubsection{Relocation}
-\label{sec-1-1-1}
+\label{sec:orgheadline1}
 
 We need our system to be able to move the location where a
-process.
+process exists, particularly in the case where we might want
+to swap it for another process.
 
 \subsubsection{Protection}
-\label{sec-1-1-2}
+\label{sec:orgheadline2}
 
 Each process should protected against unwanted interference
 by other processes, whether accidental or intentional. Thus
@@ -64,7 +64,7 @@ memory loctions in a process for reading or writing without
 sufficient permission.
 
 \subsubsection{Sharing}
-\label{sec-1-1-3}
+\label{sec:orgheadline3}
 
 In order to minimize redundancy, we would ideally like 
 processes to be able to share blocks of memory, otherwise
@@ -72,58 +72,143 @@ there will be numerous instances where this data would have
 to be duplicated.
 
 \subsubsection{Logical Organization}
-\label{sec-1-1-4}
+\label{sec:orgheadline4}
 
 The main memory of a computer system is most likely to be
 arranged as a linear, or one-dimensional, address space of
 either bytes or words.
 
 \subsubsection{Physical Organization}
-\label{sec-1-1-5}
+\label{sec:orgheadline5}
 
 Memory is organised in at least two levels, namely primary
 and secondary memory
 
 The main memory available for a program plus its data may be
 insufficient. In that case, the programmer must engage in a
-practise known as overlaying.
-
+practise known as \textbf{overlaying}.
 
 \subsection{Memory Partitioning}
-\label{sec-1-2}
+\label{sec:orgheadline18}
 
 \subsubsection{Fixed Partitioning}
-\label{sec-1-2-1}
+\label{sec:orgheadline9}
 
-This is the idea that memory is split into certain sizes
+This is the idea that memory is split into certain unchanging sizes
+that may be allocated to a process. Fixed partitioning is almost
+unknown in modern times because of the inherent memory wastage and
+inflexibility it introduces into the system.
 
 \begin{enumerate}
 \item Partition Sizes
-\label{sec-1-2-1-1}
+\label{sec:orgheadline7}
 
 Main memory utilization is extremely inefficient. Any program, 
 no matter how small, occupies an entire partition. A program
 will be forced to occupy some partition that is larger than
 its maximum size. This is wasted space, and we call this waste
-*internal f
+\textbf{internal fragmentation}.
 
 \item Placement Algorithm
-\label{sec-1-2-1-2}
+\label{sec:orgheadline8}
+
+With \texttt{equal partition} sizes the pacement of processes in memory
+is trivial. As long as there is any available partition, a process
+can be loaded into that partition. Since all partition sizes are
+equal, there is no benefit in choosing one free partition over
+another.
+
+With \texttt{unequal partition} sizes there are \textbf{two} possible ways to assign
+processes to partitions: 
+
+The simplest way is to assign the process to \textbf{the smallest partition} 
+\textbf{that fits}. In this case we will need a queue for each partition. The
+benefit of this is that we are minimizing internal fragmentation and
+therefore minimizing memory wastage. 
+
+Alternatively, we can use a single queue for all processes. A process
+will be allocated the next free block that is closest to its requiremens.
+If main memory can no longer support any new processes, then a swapping
+decision must take place, and this becomes more the job of the scheduler.
 \end{enumerate}
 
 \subsubsection{Dynamic Partitioning}
-\label{sec-1-2-2}
+\label{sec:orgheadline15}
 
 With dynamic partitioning, the partitions are of variable 
-length and number.
+length and number. Dynamic partitioning suffers from external
+fragmentation, in which processes are scattered across main 
+mememory, with gaps inbetween, each of which too small to accomodate
+another processes. To overcome this we would need to perform
+\textbf{compaction}, which is similar to defragmentation on a harddrive.
 
 \begin{enumerate}
-\item The Buddy System
-\label{sec-1-2-2-1}
+\item Placement Algorithm
+\label{sec:orgheadline13}
+
+\begin{enumerate}
+\item Best Fit
+\label{sec:orgheadline10}
+
+This algorithm chooses the block that is closes to that of
+the request.
+
+\item First Fit
+\label{sec:orgheadline11}
+
+This algorithm chooses the block that first satisfies the
+space requirement
+
+\item Next-fit
+\label{sec:orgheadline12}
+
+This algorithm chooses the second available block for the
+memory.
 \end{enumerate}
 
+\item Replacement Algorithm
+\label{sec:orgheadline14}
+
+\texttt{These are discussed in virtual memory}
+\end{enumerate}
+
+\subsubsection{The Buddy System}
+\label{sec:orgheadline16}
+
+Both fixed and dynamic partitioning schemes have their drawbacks.
+A fixed partitioning scheme limits the number of active processes
+and may use space inefficiently.A dynamic partitioning scheme bears
+the overhead of compaction.
+
+In a buddy system, the main memory is always broken into chunks of
+the power off 2. The main memory will be halved until halving it
+would make it too small for the process. When enough processes have
+finished the system may be able to merge these partitions back 
+together.
+
+[        512       ]
+[   256  ][   256  ]
+
+\subsubsection{Relocation}
+\label{sec:orgheadline17}
+
+A \textbf{logical address} is a reference to a memory address that is independent
+of the current assignment of data to memory, and therefore a translation is
+requred if we want to use the reall addresses these point to.
+
+\textbf{Relative Addresses} are addresses that express locations in memory in
+terms of a base address and an offset. This base address may be the
+start of a segment or really any arbitrary label.
+
+\textbf{Physical Addresses} are absolute addresses within main memory.
+
+If the process control block maintains a single base pointer then all 
+addresses can be relative to this pointer. This base pointer can be modified,
+and in this way a process can maintain all of its logical addresses, while
+simulaniously swapping in and out of different locations in memory.
+
 \subsection{Paging}
-\label{sec-1-3}
+\label{sec:orgheadline19}
 
 Both unequal fixed-size and variable-size partitions are 
 inefficient in the use of memory; the former results in
@@ -137,7 +222,7 @@ of the same size. The chunks of the process are known as
 \textbf{pages}, which can be assigned into chunks of memory, \textbf{frames}.
 
 \subsection{Segmentation}
-\label{sec-1-4}
+\label{sec:orgheadline20}
 
 A user program can be subdivided using segmentation, in which
 the program and its associated data are divided into a number
@@ -145,49 +230,154 @@ of \textbf{segments}. It is not required that all segments of all
 programs be of the same length, although there is a maximum 
 segment length.
 
-The difference between segmentation and paging is that
+The difference between segmentation and paging is that:
 
 \begin{center}
 \begin{tabular}{ll}
 Paging & Segmentation\\
 \hline
 Transparent to programmer & Involves the programmer\\
-No seperate protection & \\
+No seperate protection & Offers protetion\\
 No seperate compiling & \\
-No shared code. & \\
+No shared code. & Shared program\\
 \end{tabular}
 \end{center}
 
+\subsection{Loading And Linking}
+\label{sec:orgheadline28}
+
+\subsubsection{Loading}
+\label{sec:orgheadline24}
+
+Loading is essentially bringing a process into main memory such
+that is can run.
+
+\begin{enumerate}
+\item Absolute Loading
+\label{sec:orgheadline21}
+
+An absolute loade requires that a given load module always be 
+loaded into the same locations in main memory. Thus, in the load 
+module presented to the loader, all adress references must be to specific, or "absolute", main memory addresses.
+
+\item Relocatable Loading
+\label{sec:orgheadline22}
+
+The disadvantage of binding memory references to specific 
+addresses prior to loading is that the resulting load moddule 
+can only be placed in one region of main memory. However, when
+many programs share main memory, it may not be desirable to 
+decide ahead of time into which region of memory a particular
+module should be loaded. It is better to make that decision 
+at load time.
+
+\item Dynamic Run-time Loading
+\label{sec:orgheadline23}
+
+Relocatable loaders are common and provide obvious benefits relative 
+to absolute loaders. However, in a multiproramming environment, 
+even one that does not depend on virtual memory, the relocatable
+loading scheme is inadequate.
+\end{enumerate}
+
+\subsubsection{Linking}
+\label{sec:orgheadline27}
+
+The function of a linker is to take as input a collection of 
+object modules and produce a load module, consisting of an 
+integrated set of prgram and data modules, to pass to the loader. 
+
+\begin{enumerate}
+\item Linkage Editor
+\label{sec:orgheadline25}
+
+The nature of thos address linkage will depend on the type of module 
+to be created and when the linkage occurs. If, as is usually the case, 
+a relocatable load module is desired, 
+
+\item Dynamic Linker
+\label{sec:orgheadline26}
+
+As with loading, is is possible to defer some linkage functions. 
+The term \textbf{dynamic linking} is used to refer to the practise of deferring 
+the linkage of some external modules until after
+
+For \textbf{load-time dynamic linking} the following step occur:
+
+\begin{enumerate}
+\item 
+\end{enumerate}
+\end{enumerate}
+
+
 \section{Chapter 8 - Virtual Memory}
-\label{sec-2}
+\label{sec:orgheadline85}
 
 \subsection{Hardware Control Structures}
-\label{sec-2-1}
+\label{sec:orgheadline38}
 
 \subsubsection{Locality and Virtual Memory}
-\label{sec-2-1-1}
+\label{sec:orgheadline30}
+
+
 
 \subsubsection{Paging}
-\label{sec-2-1-2}
+\label{sec:orgheadline33}
+
+\begin{enumerate}
+\item Page Table Structure
+\label{sec:orgheadline31}
+
+
+\item Inverted Page Table
+\label{sec:orgheadline32}
+
+The inverted page table (IPT) is best thought of as an off-chip extension 
+of the TLB, which uses normal system RAM. Unlike the true page table, it 
+is not necessarily able to hold all current mappings.
+
+The inverted page table allows processes to potentiall share pages.
+\end{enumerate}
 
 \subsubsection{Segmentation}
-\label{sec-2-1-3}
+\label{sec:orgheadline35}
+
+\begin{enumerate}
+\item Virtual Memory Implications
+\label{sec:orgheadline34}
+\end{enumerate}
 
 \subsubsection{Combined Paging and Segmentation}
-\label{sec-2-1-4}
+\label{sec:orgheadline36}
+
+Both paging and segmentation have their strengths. Paging, 
+which is transparent to the programmer, eliminates external 
+fragmentation and thus provides efficient use of memory. Segmentation,
+which is visible to the porgrammer has the benefit of maintaining
+growing data structures, modularity and support for sharing and 
+protection.
 
 \subsubsection{Protection and Sharing}
-\label{sec-2-1-5}
+\label{sec:orgheadline37}
 
 \subsection{Operating System Software}
-\label{sec-2-2}
+\label{sec:orgheadline71}
+
+The design of the memory management portion of an OS depends on three
+fundamental areas of choice:
+
+\begin{itemize}
+\item Whether or not to use virtual memory techniques
+\item The use of paging, segmentation or both.
+\item The algorithms employed for various aspects of memory management.
+\end{itemize}
 
 \subsubsection{Fetch Policy}
-\label{sec-2-2-1}
+\label{sec:orgheadline41}
 
 \begin{enumerate}
 \item Demand Paging
-\label{sec-2-2-1-1}
+\label{sec:orgheadline39}
 
 This is the more simple of the two fetching policies.
 Pages are brought into memory when they are requested,
@@ -197,7 +387,7 @@ page faults will be numerous, but will decrease as the
 popular pages get proceedurally added to main memory.
 
 \item Prepaging
-\label{sec-2-2-1-2}
+\label{sec:orgheadline40}
 
 This policy attempts to predict the realistic future page
 use, usually by means of the \textbf{Principle of Locality}. Rather
@@ -206,49 +396,58 @@ amount of its neighbours.
 \end{enumerate}
 
 \subsubsection{Placement Policy}
-\label{sec-2-2-2}
+\label{sec:orgheadline42}
 
 
 
 \subsubsection{Replacement Policy}
-\label{sec-2-2-3}
+\label{sec:orgheadline50}
 
 When the memory we have available to load pages becomes full,
 we need certain heuristics that allow us to logically replace
 and evict certain pages.
 
 \begin{enumerate}
+\item Frame Locking
+\label{sec:orgheadline43}
+
+One restriction on replacement policy needs to be mentioned
+before looking at algorithms. Some of the frames in main memory
+may be \textbf{locked}. Essential frames such as those that the kernel
+resides in, or I/O buffers, are locked and hence cannot be
+replaced.
+
 \item Basic Algorithms
-\label{sec-2-2-3-1}
+\label{sec:orgheadline48}
 
 \begin{enumerate}
 \item Optimal
-\label{sec-2-2-3-1-1}
+\label{sec:orgheadline44}
 
 The optimal replacement policy is a theoretical concept
 that could only be implemented with perfect information
 about the past, present and future of the system.
 
 \item Least Recently Used (LRU)
-\label{sec-2-2-3-1-2}
+\label{sec:orgheadline45}
 
 In this replacement policy (which happens to be one of the
 most popular).
 
 \item First-in-First-Out (FIFO)
-\label{sec-2-2-3-1-3}
+\label{sec:orgheadline46}
 
 This replacement policy will pereferencially remove older
 pages to newer ones.
 
 \item Clock
-\label{sec-2-2-3-1-4}
+\label{sec:orgheadline47}
+
+This replacement policy is a circular list
 \end{enumerate}
 
-
-
 \item Page Buffering
-\label{sec-2-2-3-2}
+\label{sec:orgheadline49}
 
 An interesting strategy that can improve paging performance
 and allow the use of a simpler paging replacement policy is
@@ -256,121 +455,443 @@ that of page buffering.
 \end{enumerate}
 
 \subsubsection{Resident Set Management}
-\label{sec-2-2-4}
+\label{sec:orgheadline58}
 
+The resident set of a process is the pages of that process that currently
+reside in main memory.
 
+\begin{enumerate}
+\item Resident Set Size
+\label{sec:orgheadline51}
+
+The smaller the memory allocated to each process is, the more processes
+can reside in main memory, and hence it is more likely that the operating
+system can find a process that is ready to run.
+
+\item Replacement Scope
+\label{sec:orgheadline57}
+
+The scope of a replacement strategy can be 
+
+\begin{enumerate}
+\item Local Replacement Strategy
+\label{sec:orgheadline54}
+
+\begin{enumerate}
+\item Fixed Allocation
+\label{sec:orgheadline52}
+
+\item Variable Allocation
+\label{sec:orgheadline53}
+\end{enumerate}
+
+\item Global Replacement Strategy
+\label{sec:orgheadline56}
+
+\begin{enumerate}
+\item Variable Allocation
+\label{sec:orgheadline55}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
 
 \subsubsection{Cleaning Policy}
-\label{sec-2-2-5}
+\label{sec:orgheadline61}
 
 These are the policies used to decide which pages should be removed
 from main memory. These poilicies mirror/complement the fetching
-policies. Cleaning policies are important
+policies. Cleaning policies are important.
 
 \begin{enumerate}
 \item Demand
-\label{sec-2-2-5-1}
+\label{sec:orgheadline59}
 
 With demand cleaning, a page is written out to secondary memory
 only when it has been selected for replacement.
 
 \item Precleaning
-\label{sec-2-2-5-2}
+\label{sec:orgheadline60}
 
 The precleaning policy will write to seconday memory early such
 that pages can be expelled from main memory in batches.
 \end{enumerate}
 
 \subsubsection{Load Control}
-\label{sec-2-2-6}
+\label{sec:orgheadline70}
+
+Load control is concerned with determining the number of processes 
+that will be resident in main memory, which has been referred to as 
+the \textbf{multiprogramming level}.
+
+\begin{enumerate}
+\item Multiprogramming Level
+\label{sec:orgheadline62}
+
+As the multiprogramming level increases, so does thrashing, and at some
+critical point we achieve \textbf{livelock}, where processes spend their entire
+processing time, or large portions of it, swapping into and out of main
+memory.
+
+\item Process Suspension
+\label{sec:orgheadline69}
+
+If the degree of multiprogramming is to be reduced, we need some heuristics
+to systematically suspend certain processes. Here are a few measures to consider:
+
+\begin{enumerate}
+\item Lowest-priority process
+\label{sec:orgheadline63}
+
+\item Fauling process
+\label{sec:orgheadline64}
+
+\item Last process activated
+\label{sec:orgheadline65}
+
+\item Process with the smallest resident set
+\label{sec:orgheadline66}
+
+\item Largest process
+\label{sec:orgheadline67}
+
+\item Process with largest remaining execution window
+\label{sec:orgheadline68}
+\end{enumerate}
+\end{enumerate}
 
 \subsection{Unix and Solaris Memory Management}
-\label{sec-2-3}
+\label{sec:orgheadline74}
+
+\subsubsection{Paging System}
+\label{sec:orgheadline72}
+
+\subsubsection{Kernel Memory Allocator}
+\label{sec:orgheadline73}
 
 \subsection{Linux Memory Management}
-\label{sec-2-4}
+\label{sec:orgheadline76}
+
+\subsubsection{Linux Virtual Memory}
+\label{sec:orgheadline75}
 
 \subsection{Windows Memory Management}
-\label{sec-2-5}
+\label{sec:orgheadline80}
+
+\subsubsection{Windows Virtual Address Map}
+\label{sec:orgheadline77}
+
+\subsubsection{Windows Paging}
+\label{sec:orgheadline78}
+
+\subsubsection{Windows 8 Swapping}
+\label{sec:orgheadline79}
 
 \subsection{Android Memory Management}
-\label{sec-2-6}
+\label{sec:orgheadline84}
+
+Android include s a number of extensions to the normal Linux kernel memory management facility
+
+\subsubsection{ASHMem}
+\label{sec:orgheadline81}
+
+This feature provides anonymous shared memory, which abstracts memory
+as file descriptors. This file descriptor can then be parsed to another
+process to use.
+
+\subsubsection{Pmem}
+\label{sec:orgheadline82}
+
+This feature allocates virtual memory so that is it contiguous in memory.
+This is especially useful for devices that do not explicitely support
+virtual memory.
+
+\subsubsection{Low Memory Killer (\ldots{}wat)}
+\label{sec:orgheadline83}
+
+Most mobile devices do not have swap capabilities. This memory feature allows
+the Android operating system to warn apps to lower their memory usage. If an
+app is unable to, or does not comply, it is terminated.
+
 
 \section{Chpater 9 - Uniprocessor Scheduling}
-\label{sec-3}
+\label{sec:orgheadline97}
 
 \subsection{Types of Scheduling}
-\label{sec-3-1}
+\label{sec:orgheadline89}
 
 \subsubsection{Long-Term Scheduling}
-\label{sec-3-1-1}
+\label{sec:orgheadline86}
 
 The long-term scheduler determines which programs are
-admitted.
+admitted into main memory.
 
 \subsubsection{Medium-Term Scheduling}
-\label{sec-3-1-2}
+\label{sec:orgheadline87}
 
 Medium-term sheculing is part of the swapping function. This scheduling
 is the decision of what processes should be partiallly or fully in main
 memory.
 
 \subsubsection{Short-Term Scheduling}
-\label{sec-3-1-3}
+\label{sec:orgheadline88}
 
 Also known as the \textbf{dispatcher}, short-term scheduling involves deciding
 what process should be executed next by the processor.
 
 \subsection{Scheduling Algorithms}
-\label{sec-3-2}
+\label{sec:orgheadline95}
 
 \subsubsection{Short-Term Scheduling Criteria}
-\label{sec-3-2-1}
+\label{sec:orgheadline90}
 
 
 
 \subsubsection{The Use of Priorities}
-\label{sec-3-2-2}
+\label{sec:orgheadline91}
 
-
+In many systems, each process is assigned a priority and the scheduler
+will always choose a process of higher priority over one with lower priority.
 
 \subsubsection{Alternative Scheduling Policies}
-\label{sec-3-2-3}
+\label{sec:orgheadline92}
+
 
 
 
 \subsubsection{Performance Comparison}
-\label{sec-3-2-4}
+\label{sec:orgheadline93}
 
 
 
 \subsubsection{Fair-Share Scheduling}
-\label{sec-3-2-5}
-
+\label{sec:orgheadline94}
 
 
 \subsection{Traditional UNIX Scheduling}
-\label{sec-3-3}
+\label{sec:orgheadline96}
+
 
 \section{Chapter 10 - Multiprocessor Scheduling}
-\label{sec-4}
+\label{sec:orgheadline130}
 
 \subsection{Multiprocessor and Multicore Scheduling}
-\label{sec-4-1}
+\label{sec:orgheadline113}
+
+We can classify multiprocessor systems as follows
+
+\begin{itemize}
+\item Loosely coupled
+\item Functionally specialized
+\item Tightly coupled multiprocessor
+\end{itemize}
+
+\subsubsection{Granularity}
+\label{sec:orgheadline98}
+
+\begin{center}
+\begin{tabular}{lll}
+Grain Size & Description & Synchronization Interval (Inst)\\
+\hline
+Fine & Parallelism inherent in single execution stream & < 20\\
+Medium & Parallelism processing or multitasking in single application & 20 - 200\\
+Coarse & Distributed of concurrent processes in multiprogramming env & 200 - 2000\\
+Very Coarse & Distributed processing across network nodes & 2000 - 1 million\\
+Independent & Multiple unrelated processes & Not applicable\\
+\end{tabular}
+\end{center}
+
+\subsubsection{Design Issues}
+\label{sec:orgheadline102}
+
+\begin{enumerate}
+\item The Assignment of Processes to Processors
+\label{sec:orgheadline99}
+
+If a process is permanently assigned to one processor from
+its activation to completion
+
+\item THe use of multiprogramming on individual processors
+\label{sec:orgheadline100}
+
+\item Actual Dispatching of processes.
+\label{sec:orgheadline101}
+\end{enumerate}
+
+\subsubsection{Process Scheduling}
+\label{sec:orgheadline103}
+
+In most traditional multiprocessor systems, processes are not dedicated
+to processors. Rather, there is a single queue for all processors, or if
+some sort of priority scheme used, multiple queues representing priority,
+all feeding to a common pool of porcessors
+
+\subsubsection{Thread Scheduling}
+\label{sec:orgheadline111}
+
+There are four main approaches to scheduling threads, namely:
+
+\begin{enumerate}
+\item Load Scheduling
+\label{sec:orgheadline107}
+
+Processes are not assigned to a particular processor. A global queue of
+ready threads is maintained, and each processor, when idle, selects a
+thread from the queue. Some Load Scheduling algorithms include:
+
+\begin{enumerate}
+\item FCFS
+\label{sec:orgheadline104}
+
+\item Smallest number of threads first
+\label{sec:orgheadline105}
+
+\item Preemptive smallest number of threads first
+\label{sec:orgheadline106}
+\end{enumerate}
+
+\item Gang Sheduling
+\label{sec:orgheadline108}
+
+A set of related threads is scheduled to run on a set of processors at
+the same time, on a one-to-one basis.
+
+\item Dedicated Processor Assignment
+\label{sec:orgheadline109}
+
+
+
+\item Dynamic Scheduling
+\label{sec:orgheadline110}
+
+The number of threads in a proess can be altered during the course
+of execution.
+\end{enumerate}
+
+\subsubsection{Multicore Thread Scheduling}
+\label{sec:orgheadline112}
 
 \subsection{Real-Time Scheduling}
-\label{sec-4-2}
+\label{sec:orgheadline119}
+
+A \textbf{hard real-time task} is one that must be met by the deadline,
+otherwise it may cause unacceptable or fatal damage to the systems'
+function. An example of such a task is creating s Process Control
+Block for some essential process.
+
+A \textbf{soft real-time task} is one in which we would like to complete
+in time, but we do not expect the entire system to fail if we miss
+the deadline slightly.
+
+Another important concept for real time scheduling is that of 
+\textbf{periodic} and \textbf{aperiodic} tasks. These will affect our decisions, 
+as we will want to keep pages related to periodic tasks in main memory as much as
+possible.
+
+\subsubsection{Characteristics of A Real Time Operating System}
+\label{sec:orgheadline114}
+
+Real time operating systems have unique requirements 
+in the floowing general areas
+
+\begin{itemize}
+\item \textbf{Determinism}
+\item \textbf{Responsiveness}
+\item \textbf{User control}
+\item \textbf{Reliability}
+\item \textbf{Fail-soft operation}
+\end{itemize}
+
+\subsubsection{Real-Time Scheduling}
+\label{sec:orgheadline115}
+
+These are the classes of real time scheduling algorithms:
+
+\begin{itemize}
+\item Static table-driven approaches
+\item Static priority-driven preemptive approaches
+\item Dynamic planning-based approaches
+\item Dynamic best effort approaches
+\end{itemize}
+
+\subsubsection{Deadline Scheduling}
+\label{sec:orgheadline116}
+
+Most contemporary real-time operating systems are designed with
+the objective of starting real-time tasks as rapidly as possible,
+and hence emphasize rapid interrupt handling and task dispatching.
+
+Extra information includes:
+
+\begin{itemize}
+\item \textbf{Ready Time}
+\item \textbf{Starting Deadline}
+\item \textbf{Completion Deadline}
+\item \textbf{Processing Time}
+\item \textbf{Resource Requirements}
+\item \textbf{Priority}
+\item \textbf{Subtask Structure}
+\end{itemize}
+
+\subsubsection{Rate Monotic Scheduling}
+\label{sec:orgheadline117}
+
+Rate monotic scheduling is a scheduling algorithm used in real
+-time scheduling systems, using a static priority scheme. Priority
+is based on cycle duration of the job, and therefore shorter cylces
+implies higher priority. Rate monotic analysis is used in 
+conjunction with these systems to provide scheduling guarantees for
+a particular application.
+
+\subsubsection{Priority Inversion}
+\label{sec:orgheadline118}
+
+Priority inversion is the event where a high priority process is
+forced to wait for a lower priority process. This occurs because
+the lower priority process is holding some resource that the higher
+priority process requires. 
+
+In practical terms, two alternative approaches are used to avoid 
+unbounded priority inversion: \textbf{Priority inheritence} and \textbf{Priority}
+\textbf{ceiling protocol}.
 
 \subsection{Linux Scheduling}
-\label{sec-4-3}
+\label{sec:orgheadline122}
+
+\subsubsection{Real-Time Scheduling}
+\label{sec:orgheadline120}
+
+
+The three linux scheduling classes are as follows:
+
+\begin{itemize}
+\item SCHED\(_{\text{FIFO}}\)
+\item SCHED\(_{\text{RR}}\) (round robin)
+\item SCHED\(_{\text{OTHER}}\)
+\end{itemize}
+
+\subsubsection{Non-Real-Time Scheduling}
+\label{sec:orgheadline121}
 
 \subsection{UNIX SVR4 Scheduling}
-\label{sec-4-4}
+\label{sec:orgheadline123}
 
 \subsection{Unix FreeBSD Scheduling}
-\label{sec-4-5}
+\label{sec:orgheadline126}
+
+\subsubsection{Priority Classes}
+\label{sec:orgheadline124}
+
+
+
+\subsubsection{SMP and Multicore Support}
+\label{sec:orgheadline125}
 
 \subsection{Windows Scheduling}
-\label{sec-4-6}
-% Emacs 24.5.1 (Org mode 8.2.10)
+\label{sec:orgheadline129}
+
+\subsubsection{Process and Thread Priorities}
+\label{sec:orgheadline127}
+
+\subsubsection{Multiprocessor Schduling}
+\label{sec:orgheadline128}
 \end{document}

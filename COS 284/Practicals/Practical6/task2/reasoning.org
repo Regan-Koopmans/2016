@@ -1,0 +1,48 @@
+#+startup: indent
+
+* Assignment Component
+
+** Problem Definition
+
+For the assignment I have to write a function, ~calculateRoutes~, that finds the
+shortest paths from a given parameter node, to every other node in the graph.
+
+** Strategies
+
+As mentioned in the spec, before doing anything else I will need to obtain the
+comprehensive list of all the nodes in the graph. This will be a recursive
+algorithm, for which I can have the pseudo-code as follows:
+
+#+BEGIN_SRC cpp
+public bool contains(Node queryNode)
+{
+ for (int x = 0; x < node_array_size; ++x)
+    if (node_array[x] == queryNode)
+      return true;
+ return false;
+}
+
+public void addNodes(Node baseNode)
+{
+ appendToArray(baseNode);
+ for (int x = 0; x < ; ++x)
+   if (!contains())
+ 
+}
+
+public void appendToArray(Node newNode)
+{
+  Node [] new_array = new Node[node_array_size+1];
+  
+  node_array_size += 1;
+  node_array = new_array;
+}
+#+END_SRC
+
+24
+
+** Issues Faced
+
+It seems that the array is not actually growing, but only setting the first
+element to the most recently added element. Therefore, the algorithm is running
+into an infinite loop. *I need to double check my array-growing logic*.
