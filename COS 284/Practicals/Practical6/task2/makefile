@@ -12,10 +12,13 @@ all: main.o calculateRoutes.o
 
 main.o: main.c
 	gcc -c main.c -m64
-	
+
 calculateRoutes.o: calculateRoutes.asm
 	yasm -f elf64 -g dwarf2 calculateRoutes.asm -o calculateRoutes.o
 
-run: 
+run:
 	./prog.out $(RUN_ARGS)
 
+clean:
+	rm *.o
+	rm prog.out

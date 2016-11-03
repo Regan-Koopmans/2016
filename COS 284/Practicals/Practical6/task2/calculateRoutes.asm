@@ -11,10 +11,6 @@ node_array_size:        dq  0
 current_node:           dq  0
 new_array:              dq  0
 
-rec_node        equ   0
-rec_counter     equ   8
-rec_num_links   equ   16
-
   section .text
   extern malloc
   extern free
@@ -33,6 +29,8 @@ calculateRoutes:
   call    addNodes              ; After calling this we should have a complete
                                 ; list of nodes
 
+
+  call    addAllRoutesDirectNeighbours
 
   leave
   ret
@@ -128,7 +126,7 @@ append_continue:
 addNodes:
   push    rbp
   mov     rbp, rsp
-  sub     rsp, 32
+  sub     rsp, 48
 
   cmp     rdi, 0
   jne     node_not_null
@@ -136,35 +134,136 @@ addNodes:
   ret
 
 node_not_null:
-  mov     [rsp+rec_node], rdi
+  mov     [rsp], rdi
   call    appendToArray
-  mov     rdi, [rsp+rec_node]
+  mov     rdi, [rsp]
 
   mov     rdx, [rdi + 16]       ; Number of links
   mov     rbx, [rdi + 8]        ; start of the links array
   mov     rcx, 0
   mov     [rsp+8], rcx
-  mov     [rsp+rec_num_links], rbx
+  mov     [rsp+16], rbx
 
 addNodes_loop:
+  mov     rbx, [rsp+16]
   mov     rcx, [rsp+8]
   imul    rcx, 16
   mov     rdi, [rbx+rcx]
+  mov     [rsp+32],rdi
   call    contains
+
+  mov     rdi,[rsp+32]
 
   cmp     rax,0
   jne     do_not_add_node
   call    addNodes
 
 do_not_add_node:
+  mov     rdi, [rsp]
+  inc     dword   [rsp + 8]
 
-  inc     qword   [rsp + 8]
-
-  mov     rcx, [rsp + rec_counter]
-  mov     rdx, [rsp + rec_num_links]
+  mov     rcx, [rsp + 8]
+  mov     rdx, [rdi + 16]
   cmp     rcx, rdx
-  jle     addNodes_loop
+  jl     addNodes_loop
 
-  add     rsp, 32
+  add     rsp, 48
+  leave
+  ret
+
+
+addRoutesDirectNeighbours:
+  push  rbp
+  mov   rbp, rsp
+
+  mov   [current_node], rdi
+  mov   rax, [rdi+24]
+  cmp   rax, 0
+  je    dont_free_existing_routes
+
+  mov   rdi, rax
+  call  free
+
+dont_free_existing_routes:
+
+  mov   rax, [rdi+16]           ; Number of links
+  inc   rax
+  imul  rax, 24                 ; Each route is 24 bytes
+  mov   rdi, rax
+  call  malloc
+
+  mov   [new_array], rax
+  mov   rdi, [current_node]
+  mov   rdx, [rdi+16]
+  mov   rbx, [rdi+8]
+  mov   rcx, 0
+aRDN_while:
+
+  mov   r8, rcx
+  imul  r8, 16
+  mov   r9, [rbx+r8]
+  add   r8, 8
+  mov   r10, [rbx+r8]
+
+  mov   r8, rcx
+  imul  r8, 24
+  mov   [rax+r8], r9
+  add   r8, 8
+  mov   [rax+r8], r10
+  add   r8, 8
+  mov   [rax+r8], r9
+
+  inc   rcx
+  cmp   rcx, rdx
+  jl    aRDN_while
+
+  ;; Place link to one's self
+
+  mov   r10, [current_node]
+  mov   r11, 0
+  mov   r8, rcx
+  imul  r8, 24
+  mov   [rax+r8], r10
+  add   r8,8
+  mov   [rax+r8], r11
+  add   r8,8
+  mov   [rax+r8], r10
+  inc   rcx
+
+  mov   rdi, [current_node]
+  mov   rax, [new_array]
+  mov   [rdi+24], rax
+  mov   [rdi+32], rcx
+
+  leave
+  ret
+
+
+addAllRoutesDirectNeighbours:
+  push  rbp
+  mov   rbp, rsp
+  sub   rsp, 32
+
+  mov   r8, [node_array]
+  mov   r9, 0
+  mov   r10, [node_array_size]
+
+aARDN_while:                     ; Loops through all nodes
+  mov   rdi, [r8+8*r9]
+  mov   [rsp+0], r8
+  mov   [rsp+8], r9
+  mov   [rsp+16], r10
+
+  call  addRoutesDirectNeighbours
+
+  mov    r8,  [rsp+0]
+  mov    r9,  [rsp+8]
+  mov    r10, [rsp+16]
+  inc    r9
+  cmp    r9, r10
+  jl     aARDN_while
+
+  add    rsp, 32
+
   leave
   ret

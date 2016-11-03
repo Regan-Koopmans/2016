@@ -10,7 +10,7 @@ struct Node
 		double distance;
 	}* links;
 	size_t nrOfLinks;
-	struct
+	struct Route
 	{
 		struct Node* target;
 		double totalDistance;
@@ -19,7 +19,7 @@ struct Node
 	size_t nrOfRoutes;
 };
 
-extern void calculateRoutes(struct Node*);
+extern void * calculateRoutes(struct Node*);
 
 int main()
 {
@@ -28,6 +28,7 @@ int main()
 	struct Node* nodeC = malloc(sizeof(struct Node));
 	struct Node* nodeD = malloc(sizeof(struct Node));
 
+  struct Node * test;
 
 	nodeA->id = "Node A";
 	nodeB->id = "Node B";
