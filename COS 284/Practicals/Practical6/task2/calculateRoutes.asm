@@ -10,6 +10,9 @@ node_array:             dq  0
 node_array_size:        dq  0
 current_node:           dq  0
 new_array:              dq  0
+counter:                dq  0
+has_route_to:		dq  0
+has_route_from: 	dq  0
 
   section .text
   extern malloc
@@ -31,6 +34,19 @@ calculateRoutes:
 
 
   call    addAllRoutesDirectNeighbours
+  mov     rax, [node_array_size]
+  mov     rcx, 0
+  mov     [counter],rcx
+
+cR_while:
+
+  call    updateAllRoutes
+  inc     qword [counter]
+  mov     rcx, [counter]
+  mov     rdx, [node_array_size]
+  cmp     rcx, rdx
+  jl      cR_while
+
 
   leave
   ret
@@ -96,8 +112,8 @@ appendToArray:
   mov     rdx, [node_array_size]
 
 append_loop:
-	cmp     rcx, rdx
-	jge     append_continue
+  cmp     rcx, rdx
+  jge     append_continue
 
   mov     r10, [rbx]
   mov     [rax], r10
@@ -197,6 +213,7 @@ dont_free_existing_routes:
   mov   rdx, [rdi+16]
   mov   rbx, [rdi+8]
   mov   rcx, 0
+
 aRDN_while:
 
   mov   r8, rcx
@@ -264,6 +281,105 @@ aARDN_while:                     ; Loops through all nodes
   jl     aARDN_while
 
   add    rsp, 32
+
+  leave
+  ret
+
+
+appendToRoutes:
+  push 	rbp
+  mov 	rbp, rsp
+
+
+
+  leave
+  ret
+
+
+hasRoute:			; Either fetches route distance or returns "-1"
+  push 	rbp
+  mov 	rbp, rsp
+  sub 	rsp, 8
+
+  mov 	[has_route_to]  , rsi
+  mov 	[has_route_from], rdi
+
+  mov 	rcx, 0
+  mov 	rdx, [rdi+16]
+  mov 	[rsp], rcx
+
+hasRoute_loop:
+   
+
+  inc 	qword 	[rsp]
+  mov 	rcx, [rsp]
+  mov 	rdx, [rdi+16]  
+  cmp 	rcx, rdx
+  jl	hasRoute_loop  
+
+  mov 	rax,-1    		; No route between nodes 
+
+
+  add 	rsp, 8
+  leave
+  ret
+
+  ;; Helper function : updates routes for given node, where the magic happens
+
+updateRoutes:
+  push  rbp
+  mov   rbp, rsp
+  sub 	rsp, 8
+
+
+  mov	rcx, 0 			; Counter used for looping through neighbours
+  mov 	[rsp], rcx
+  mov 	rdx, [node_array_size]
+  mov 	[current_node], rdi
+
+uR_while:
+  mov 	rax, [node_array]
+  mov 	rdi, [current_node]
+  mov 	rsi, [rax+8*rcx]
+  call 	hasRoute  
+ 
+  cmp 	rax, -1
+  je  	uR_continue
+  call 	appendToRoutes
+
+uR_continue:
+
+  inc	qword [rsp]
+  mov 	rcx, [rsp]
+  mov 	rdx, [node_array_size]
+  cmp 	rcx, rdx
+  jl	uR_while	
+
+  add 	rsp, 8
+  leave
+  ret
+
+  ;; Helper function : for each node, calls updateRoutes
+
+updateAllRoutes:
+  push  rbp
+  mov   rbp, rsp
+
+  sub   rsp, 8
+  mov   rcx, 0
+  mov   [rsp], rcx
+
+uAR_while:
+  mov   rax, [node_array]
+  mov   rdi, [rax+8*rcx]
+  call  updateRoutes
+
+  inc   qword   [rsp]
+  mov   rcx, [rsp]
+  mov   rdx, [node_array_size]
+  cmp   rcx, rdx
+  jl    uAR_while
+
 
   leave
   ret
