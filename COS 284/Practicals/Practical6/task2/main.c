@@ -69,7 +69,7 @@ int main()
 	nodeD->routes = 0;
 	nodeD->nrOfRoutes = 0;
 
-	calculateRoutes(nodeD);
+	calculateRoutes(nodeC);
 	calculateRoutes(nodeD);
 
 	for (size_t i = 0; i < nodeA->nrOfRoutes; i++)

@@ -12,8 +12,8 @@ node_array_size:        dq  0
 current_node:           dq  0
 new_array:              dq  0
 counter:                dq  0
-has_route_to:		dq  0
-has_route_from: 	dq  0
+has_route_to:		        dq  0
+has_route_from: 	      dq  0
 
   section .text
   extern malloc
