@@ -19,7 +19,7 @@ struct Node
 	size_t nrOfRoutes;
 };
 
-extern void * calculateRoutes(struct Node*);
+extern void calculateRoutes(struct Node*);
 
 int main()
 {

@@ -6,6 +6,7 @@
 
   section .data
 
+one:                    dq  1.0
 node_array:             dq  0
 node_array_size:        dq  0
 current_node:           dq  0
@@ -287,14 +288,80 @@ aARDN_while:                     ; Loops through all nodes
   ret
 
 
-appendToRoutes:
+appendToRoutes:       ; rsi=to, rdi=from, r12=next
   push 	rbp
   mov 	rbp, rsp
 
-  mov 	rax, [rdi + 24]  	; Start of routes array in "from" node
-  mov 	rcx, 0
-  mov 	r14, [rdi + 32]  
+;;;;;;;;;;;;;;;;;;;;;;;;; Purely for error resistance
 
+  cmp   rdi, 0
+  jne   rdi_not_null
+  leave 
+  ret
+
+rdi_not_null  
+  cmp   rsi, 0
+  jne   neither_null
+  leave
+  ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ;; Allocate new route array
+
+neither_null:
+  mov   rax, [rdi]
+  mov   [current_node], rdi
+  add   rax, 24
+  mov   rdi, rax
+  call  malloc
+  mov   [new_array], rax
+
+  mov   rdi, [current_node]
+  mov   rax, [new_array]
+  mov   r8, [rdi+24]
+  mov   rcx, 0
+  mov   rdx, [rdi+32]
+
+aTR_while:
+  mov   r9, [r8]
+  mov   [rax], r9
+  add   r8, 8
+  add   rax, 8
+
+  mov   r9, [r8]
+  mov   [rax], r9
+  add   r8, 8
+  add   rax, 8
+
+  mov   r9, [r8]
+  mov   [rax], r9
+  add   r8, 8
+  add   rax, 8
+
+  inc   rcx
+  cmp   rcx, rdx
+  jl    aTR_while
+  
+  mov   r9, [has_route_to]
+  mov   [rax], r9
+  add   r8, 8
+  add   rax, 8
+
+  mov   r9, [one]
+  mov   [rax], r9
+  add   r8, 8
+  add   rax, 8
+
+  mov   r9, r12
+  mov   [rax], r12
+  add   r8, 8
+  add   rax, 8   
+
+  mov   rax, [new_array]
+  mov   [rdi+24], rax
+  inc   qword [rdi+32]
+  mov   rdi, [current_node]
 
   leave
   ret
@@ -313,6 +380,7 @@ hasRoute:
   mov 	r8,  [rdi + 8]
 
 hasRoute_loop:
+  mov   r8, [rdi+8]
   imul 	rcx,16
   mov 	r9, [r8+rcx]		; This gives us the node at link[rcx]. r9 now has some neighbour
   add 	rcx, 8
@@ -328,6 +396,10 @@ for_neighbour_loop:
   mov 	r12, [r10+rax]
   cmp 	rsi, r12
   jne 	not_equal_target  
+  add   rax, 8
+  mov   rdx, [r10+rax]
+  mov   rdi, [has_route_from]
+  mov   rsi, [has_route_to]
   call 	appendToRoutes
 
 not_equal_target:
