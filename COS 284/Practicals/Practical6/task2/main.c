@@ -70,6 +70,7 @@ int main()
 	nodeD->nrOfRoutes = 0;
 
 	calculateRoutes(nodeD);
+	calculateRoutes(nodeD);
 
 	for (size_t i = 0; i < nodeA->nrOfRoutes; i++)
 	{

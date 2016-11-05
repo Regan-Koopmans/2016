@@ -6,7 +6,7 @@
 
   section .data
 
-one:                    dq  1.0
+inf:                    dq  99999999999999999.0
 node_array:             dq  0
 node_array_size:        dq  0
 current_node:           dq  0
@@ -177,6 +177,7 @@ addNodes_loop:
   call    addNodes
 
 do_not_add_node:
+
   mov     rdi, [rsp]
   inc     dword   [rsp + 8]
 
@@ -189,10 +190,16 @@ do_not_add_node:
   leave
   ret
 
-
 addRoutesDirectNeighbours:
   push  rbp
   mov   rbp, rsp
+
+  cmp   rdi, 0
+  jne   not_null
+  leave
+  ret
+
+not_null:
 
   mov   [current_node], rdi
   mov   rax, [rdi+24]
@@ -204,6 +211,7 @@ addRoutesDirectNeighbours:
 
 dont_free_existing_routes:
 
+  mov   rdi, [current_node]
   mov   rax, [rdi+16]           ; Number of links
   inc   rax
   imul  rax, 24                 ; Each route is 24 bytes
@@ -307,9 +315,50 @@ rdi_not_null
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; Allocate new route array
+  ;; Check for presence of route
 
 neither_null:
+  cmp   rsi, rdi
+  jne   to_from_not_equal
+  leave 
+  ret
+
+to_from_not_equal:
+
+
+  mov   rax, [rdi+24]
+  cmp   rax, 0
+  je    allocate_new            ;; Jump if routes are null
+  mov   rbx, [has_route_to]
+  mov   rcx, 0
+  mov   rdx, [rdi+32]
+
+aRC_while:
+  mov   r8, [rax]
+  cmp   r8, rsi
+  jne   aRC_continue
+
+  movsd   xmm0, [rax+8]           ; now holds the current distance of this path
+  addsd   xmm3, xmm1
+  ucomisd xmm0, xmm3
+  jb   do_not_replace_route
+
+  mov   r8, 1
+  movsd [rax+8], xmm3         ; Change the length
+  mov   [rax+16], r9
+
+do_not_replace_route:
+  leave
+  ret
+
+aRC_continue:
+  inc   rcx
+  add   rax, 24
+  cmp   rcx, rdx
+  jl    aRC_while
+
+allocate_new:
+
   mov   rax, [rdi]
   mov   [current_node], rdi
   add   rax, 24
@@ -348,7 +397,7 @@ aTR_while:
   add   r8, 8
   add   rax, 8
 
-  mov   r9, [one]
+  mov   r9, [inf]
   mov   [rax], r9
   add   r8, 8
   add   rax, 8
@@ -384,7 +433,7 @@ hasRoute_loop:
   imul 	rcx,16
   mov 	r9, [r8+rcx]		; This gives us the node at link[rcx]. r9 now has some neighbour
   add 	rcx, 8
-  mov 	rbx, [r8+rcx]
+  movsd xmm1, [r8+rcx]    ; Contains distance to this neighbour
   mov 	r10, [r9 + 24]		; r10 now contains routes array of some neighbour
   mov 	r11, 0
   mov 	r13, [r9 + 32]
@@ -397,7 +446,7 @@ for_neighbour_loop:
   cmp 	rsi, r12
   jne 	not_equal_target  
   add   rax, 8
-  mov   rdx, [r10+rax]
+  movsd xmm3, [r10+rax]
   mov   rdi, [has_route_from]
   mov   rsi, [has_route_to]
   call 	appendToRoutes
