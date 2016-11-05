@@ -96,6 +96,7 @@ not_equal:
 
   ;; Helper Function: dynamically adds to node_array
 
+
 appendToArray:
   push    rbp
   mov     rbp, rsp
@@ -290,34 +291,56 @@ appendToRoutes:
   push 	rbp
   mov 	rbp, rsp
 
+  mov 	rax, [rdi + 24]  	; Start of routes array in "from" node
+  mov 	rcx, 0
+  mov 	r14, [rdi + 32]  
 
 
   leave
   ret
 
-
-hasRoute:			; Either fetches route distance or returns "-1"
+hasRoute:
   push 	rbp
   mov 	rbp, rsp
   sub 	rsp, 8
 
-  mov 	[has_route_to]  , rsi
   mov 	[has_route_from], rdi
+  mov 	[has_route_to]  , rsi
 
   mov 	rcx, 0
-  mov 	rdx, [rdi+16]
+  mov 	rdx, [rdi + 16]
   mov 	[rsp], rcx
+  mov 	r8,  [rdi + 8]
 
 hasRoute_loop:
-   
+  imul 	rcx,16
+  mov 	r9, [r8+rcx]		; This gives us the node at link[rcx]. r9 now has some neighbour
+  add 	rcx, 8
+  mov 	rbx, [r8+rcx]
+  mov 	r10, [r9 + 24]		; r10 now contains routes array of some neighbour
+  mov 	r11, 0
+  mov 	r13, [r9 + 32]
+
+for_neighbour_loop:
+
+  mov 	rax,r11
+  imul 	rax, 24
+  mov 	r12, [r10+rax]
+  cmp 	rsi, r12
+  jne 	not_equal_target  
+  call 	appendToRoutes
+
+not_equal_target:
+
+  inc 	r11
+  cmp 	r11, r13 
+  jl 	for_neighbour_loop
 
   inc 	qword 	[rsp]
   mov 	rcx, [rsp]
-  mov 	rdx, [rdi+16]  
+  mov 	rdx, [rdi + 16]  
   cmp 	rcx, rdx
   jl	hasRoute_loop  
-
-  mov 	rax,-1    		; No route between nodes 
 
 
   add 	rsp, 8
@@ -343,12 +366,6 @@ uR_while:
   mov 	rsi, [rax+8*rcx]
   call 	hasRoute  
  
-  cmp 	rax, -1
-  je  	uR_continue
-  call 	appendToRoutes
-
-uR_continue:
-
   inc	qword [rsp]
   mov 	rcx, [rsp]
   mov 	rdx, [node_array_size]

@@ -28,8 +28,6 @@ int main()
 	struct Node* nodeC = malloc(sizeof(struct Node));
 	struct Node* nodeD = malloc(sizeof(struct Node));
 
-  struct Node * test;
-
 	nodeA->id = "Node A";
 	nodeB->id = "Node B";
 	nodeC->id = "Node C";
