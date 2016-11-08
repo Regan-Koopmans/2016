@@ -30,6 +30,10 @@ calculateRoutes:
   push    rbp
   mov     rbp, rsp
 
+  mov     rax, 0
+  mov     [node_array], rax
+  mov     [node_array_size], rax
+
   call    addNodes              ; After calling this we should have a complete
                                 ; list of nodes
 
@@ -152,6 +156,14 @@ addNodes:
   ret
 
 node_not_null:
+  mov     rbx, [rdi+8]
+  cmp     rbx, 0
+  jne     has_links
+  leave
+  ret
+
+
+has_links:
   mov     [rsp], rdi
   call    appendToArray
   mov     rdi, [rsp]
@@ -264,7 +276,7 @@ aRDN_while:
 
   leave
   ret
-
+ 
 
 addAllRoutesDirectNeighbours:
   push  rbp
@@ -274,6 +286,7 @@ addAllRoutesDirectNeighbours:
   mov   r8, [node_array]
   mov   r9, 0
   mov   r10, [node_array_size]
+
 
 aARDN_while:                     ; Loops through all nodes
   mov   rdi, [r8+8*r9]
@@ -463,7 +476,6 @@ not_equal_target:
   cmp 	rcx, rdx
   jl	hasRoute_loop  
 
-
   add 	rsp, 8
   leave
   ret
@@ -506,6 +518,11 @@ updateAllRoutes:
   sub   rsp, 8
   mov   rcx, 0
   mov   [rsp], rcx
+  mov   rax, [node_array]
+  cmp   rax, 0
+  jne   uR_while
+  leave
+  ret
 
 uAR_while:
   mov   rax, [node_array]

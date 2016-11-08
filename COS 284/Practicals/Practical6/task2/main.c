@@ -27,11 +27,13 @@ int main()
 	struct Node* nodeB = malloc(sizeof(struct Node));
 	struct Node* nodeC = malloc(sizeof(struct Node));
 	struct Node* nodeD = malloc(sizeof(struct Node));
+	struct Node* nodeE = malloc(sizeof(struct Node));
 
 	nodeA->id = "Node A";
 	nodeB->id = "Node B";
 	nodeC->id = "Node C";
 	nodeD->id = "Node D";
+	nodeE->id = "Node E";
 
 	nodeA->links = malloc(sizeof(struct Link)*3);
 	nodeA->links[0].neighbour = nodeB;
@@ -44,12 +46,14 @@ int main()
 	nodeA->routes = 0;
 	nodeA->nrOfRoutes = 0;
 
-	nodeB->links = malloc(sizeof(struct Link)*2);
+	nodeB->links = malloc(sizeof(struct Link)*3);
 	nodeB->links[0].neighbour = nodeA;
 	nodeB->links[0].distance = 5.4;
 	nodeB->links[1].neighbour = nodeC;
 	nodeB->links[1].distance = 1.2;
-	nodeB->nrOfLinks = 2;
+	nodeB->links[2].neighbour = nodeE;
+	nodeB->links[2].distance = 1.2;
+	nodeB->nrOfLinks = 3;
 	nodeB->routes = 0;
 	nodeB->nrOfRoutes = 0;
 
@@ -69,8 +73,16 @@ int main()
 	nodeD->routes = 0;
 	nodeD->nrOfRoutes = 0;
 
-	calculateRoutes(nodeC);
-	calculateRoutes(nodeD);
+	nodeD->links = malloc(sizeof(struct Link)*1);
+	nodeD->links[0].neighbour = nodeA;
+	nodeD->links[0].distance = 12.0;
+	nodeD->nrOfLinks = 1;
+	nodeD->routes = 0;
+	nodeD->nrOfRoutes = 0;
+
+	printf("%p\n", *(nodeE+8));
+
+	calculateRoutes(nodeE);
 
 	for (size_t i = 0; i < nodeA->nrOfRoutes; i++)
 	{
@@ -105,6 +117,15 @@ int main()
 		printf(" ");
 		printf(nodeD->routes[i].nextHop->id);
 		printf(" %.1f ", nodeD->routes[i].totalDistance);
+		printf("\n");
+	}
+	printf("\n");
+	for (size_t i = 0; i < nodeE->nrOfRoutes; i++)
+	{
+		printf(nodeE->routes[i].target->id);
+		printf(" ");
+		printf(nodeE->routes[i].nextHop->id);
+		printf(" %.1f ", nodeE->routes[i].totalDistance);
 		printf("\n");
 	}
 	printf("\n");
